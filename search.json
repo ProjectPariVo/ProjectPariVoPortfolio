@@ -26,5 +26,33 @@
     "title": "ProjectParivo",
     "section": "About Us",
     "text": "About Us\nAudrey and Victoria are seniors at Harvey Mudd College, majoring in engineering, and passionate about music. For their E155 (AKA MicroPs) Final Project, they are working together to create a two-channel DJ mixer. Ultimately, they hope to DJ together with their mixer.\n\nVictoria Parizot - Norwalk, CT\nVictoria Parizot is most interested with mechanical and electrical design, and excited to be taking MicroPs this semester! At Harvey Mudd, she is a West Dorm President, a Machine Shop Proctor, and a Member of Tau Beta Pi Honors Society. In her free time, she enjoys woodworking, taking and developing film photos, and sailing.\nTake a look at her Portfolio to learn more!\n\n\nAudrey Vo - Valley Girl, CA\nAudrey is an APISPAM Head Sponsor, Atwood Dorm President, and Machine Shop Proctor at Harvey Mudd. The past few summers, she has been able to participate in summer research with Prof. Dodds in “Summer Start-Up” and with Prof. Gokli as part of the Riggs Fellowship. She was previously HMC 2025 Class President and also a member of the Prisoner Education Project.\nAudrey is currently a resident of Southern California, and have lived here her entire life. (If you have any recommendations of things to do in CA, please let Audrey know!). In her free time, she love to play pickleball, try new foods, and spend time with friends.\nIf you are interested in learning more about Audrey, please feel free to connect on LinkedIn or explore her portfolio!"
+  },
+  {
+    "objectID": "currentStatus/digitalFiltering.html",
+    "href": "currentStatus/digitalFiltering.html",
+    "title": "Digital Filtering",
+    "section": "",
+    "text": "We have set up the onboard MCU ADC to read in the four external potentiometer values and used SPI to transfer these EQ values to the FPGA to be used for digital filtering. We have opted for Finite Impulse Response (FIR) to apply low and high pass filters to the audio data that we will read in from the PCM1808 DAC. The EQ values correspond to 16 buckets between 0 to 20 kHz (the range of human hearing), with each bucket ranging 1.25 kHz (20 kHz/16). Thus, the EQ value influences the passband and stopband of the filters. To implement FIR, we have generated and tested the integer coefficients for the desired filters in Matlab and exported them as a .txt file. The filters will have 128 taps, a number derived from preliminary testing to find the minimum number of taps needed to create the desired filters. The .txt file of coefficients is read into the FPGA using an FSM and similar logic as sbox_sync in lab 7."
+  },
+  {
+    "objectID": "currentStatus/digitalFiltering.html#digital-filtering-mcu-adc-spi-from-mcu-and-fpga-fir-coefficient-generation",
+    "href": "currentStatus/digitalFiltering.html#digital-filtering-mcu-adc-spi-from-mcu-and-fpga-fir-coefficient-generation",
+    "title": "Digital Filtering",
+    "section": "",
+    "text": "We have set up the onboard MCU ADC to read in the four external potentiometer values and used SPI to transfer these EQ values to the FPGA to be used for digital filtering. We have opted for Finite Impulse Response (FIR) to apply low and high pass filters to the audio data that we will read in from the PCM1808 DAC. The EQ values correspond to 16 buckets between 0 to 20 kHz (the range of human hearing), with each bucket ranging 1.25 kHz (20 kHz/16). Thus, the EQ value influences the passband and stopband of the filters. To implement FIR, we have generated and tested the integer coefficients for the desired filters in Matlab and exported them as a .txt file. The filters will have 128 taps, a number derived from preliminary testing to find the minimum number of taps needed to create the desired filters. The .txt file of coefficients is read into the FPGA using an FSM and similar logic as sbox_sync in lab 7."
+  },
+  {
+    "objectID": "currentStatus/digitalFiltering.html#communicating-eq-values-to-fpga",
+    "href": "currentStatus/digitalFiltering.html#communicating-eq-values-to-fpga",
+    "title": "Digital Filtering",
+    "section": "Communicating EQ Values to FPGA",
+    "text": "Communicating EQ Values to FPGA"
+  },
+  {
+    "objectID": "currentStatus/digitalFiltering.html#generating-coefficients",
+    "href": "currentStatus/digitalFiltering.html#generating-coefficients",
+    "title": "Digital Filtering",
+    "section": "Generating Coefficients",
+    "text": "Generating Coefficients"
   }
 ]
