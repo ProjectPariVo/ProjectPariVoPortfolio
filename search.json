@@ -32,27 +32,34 @@
     "href": "currentStatus/digitalFiltering.html",
     "title": "Digital Filtering",
     "section": "",
-    "text": "We have set up the onboard MCU ADC to read in the four external potentiometer values and used SPI to transfer these EQ values to the FPGA to be used for digital filtering. We have opted for Finite Impulse Response (FIR) to apply low and high pass filters to the audio data that we will read in from the PCM1808 DAC. The EQ values correspond to 16 buckets between 0 to 20 kHz (the range of human hearing), with each bucket ranging 1.25 kHz (20 kHz/16). Thus, the EQ value influences the passband and stopband of the filters. To implement FIR, we have generated and tested the integer coefficients for the desired filters in Matlab and exported them as a .txt file. The filters will have 128 taps, a number derived from preliminary testing to find the minimum number of taps needed to create the desired filters. The .txt file of coefficients is read into the FPGA using an FSM and similar logic as sbox_sync in lab 7."
+    "text": "To apply digital filtering of the output audio signal, we utilize the MCU’s onboard ADC, use SPI to communicate EQ values between the MCU and FPGA, and generate the necessary FIR Coefficients."
   },
   {
-    "objectID": "currentStatus/digitalFiltering.html#digital-filtering-mcu-adc-spi-from-mcu-and-fpga-fir-coefficient-generation",
-    "href": "currentStatus/digitalFiltering.html#digital-filtering-mcu-adc-spi-from-mcu-and-fpga-fir-coefficient-generation",
+    "objectID": "currentStatus/digitalFiltering.html#digital-filtering",
+    "href": "currentStatus/digitalFiltering.html#digital-filtering",
     "title": "Digital Filtering",
-    "section": "",
-    "text": "We have set up the onboard MCU ADC to read in the four external potentiometer values and used SPI to transfer these EQ values to the FPGA to be used for digital filtering. We have opted for Finite Impulse Response (FIR) to apply low and high pass filters to the audio data that we will read in from the PCM1808 DAC. The EQ values correspond to 16 buckets between 0 to 20 kHz (the range of human hearing), with each bucket ranging 1.25 kHz (20 kHz/16). Thus, the EQ value influences the passband and stopband of the filters. To implement FIR, we have generated and tested the integer coefficients for the desired filters in Matlab and exported them as a .txt file. The filters will have 128 taps, a number derived from preliminary testing to find the minimum number of taps needed to create the desired filters. The .txt file of coefficients is read into the FPGA using an FSM and similar logic as sbox_sync in lab 7."
+    "section": "Digital Filtering",
+    "text": "Digital Filtering\nWe have set up the onboard MCU ADC to read in the four external potentiometer values and used SPI to transfer these EQ values to the FPGA to be used for digital filtering. We have opted for Finite Impulse Response (FIR) to apply low and high pass filters to the audio data that we will read in from the PCM1808 DAC. The EQ values correspond to 16 buckets between 0 to 20 kHz (the range of human hearing), with each bucket ranging 1.25 kHz (20 kHz/16). Thus, the EQ value influences the passband and stopband of the filters. To implement FIR, we have generated and tested the integer coefficients for the desired filters in Matlab and exported them as a .txt file. The filters will have 128 taps, a number derived from preliminary testing to find the minimum number of taps needed to create the desired filters. The .txt file of coefficients is read into the FPGA using an FSM and similar logic as sbox_sync in lab 7."
   },
   {
     "objectID": "currentStatus/digitalFiltering.html#communicating-eq-values-to-fpga",
     "href": "currentStatus/digitalFiltering.html#communicating-eq-values-to-fpga",
     "title": "Digital Filtering",
     "section": "Communicating EQ Values to FPGA",
-    "text": "Communicating EQ Values to FPGA"
+    "text": "Communicating EQ Values to FPGA\nThe EQ values are determined by potentiometer voltage dividers being routed into the MCU. The MCU ADC converts these analog values into 8-bit values between 0 to 256, which will ultimately be used to determine the passband frequencies for the low and high pass filters.\nAfter the MCU interprets these voltages into 8-bit values, it passes these values using SPI to the FPGA. Below is an example of a working SPI interaction. When the potentiometer is set to approximately 79.\n\n\n\nEQ Values Printed Out Debug Terminal\n\n\n\n\n\nLogic Analyzer SPI"
   },
   {
     "objectID": "currentStatus/digitalFiltering.html#generating-coefficients",
     "href": "currentStatus/digitalFiltering.html#generating-coefficients",
     "title": "Digital Filtering",
     "section": "Generating Coefficients",
-    "text": "Generating Coefficients"
+    "text": "Generating Coefficients\nWe opted to pass in FIR coefficients generated in MatLab so that we could utilize the DSP toolbox and easily visualize and adjust the filter and taps.\nIn order to use these coefficients in the FPGA, we wanted to convert the values from floating point to integer, which requires scaling the coefficients by a value of g. The floating point and integer coefficients are shown below, where if we scale the signal we see that the shape of the plots are the same. Thus, when plotting the output signal, it is critical to scale the signal by dividing by g.\nThe below figures are for a lowpass filter with 128 taps and a pass band ending at 1250 hZ.\n\n\n\nInteger coefficients are scaled up from floating point coefficients\n\n\n\n\n\nFloating point and integer coefficients share the same shape\n\n\n\n\n\nFIR Filter as defined by coefficients\n\n\nWe then confirmed the design of these filters by creating a signal with multiple frequency components and applying our filter and gain scaling. To do this, we copied out verilog logic, allowing us to confirm that our logic acted as expected.\n\n\n\nOriginal signal with multiple frequency components\n\n\n\n\n\nOutput and original signal"
+  },
+  {
+    "objectID": "currentStatus/digitalFiltering.html#passing-in-the-coefficients",
+    "href": "currentStatus/digitalFiltering.html#passing-in-the-coefficients",
+    "title": "Digital Filtering",
+    "section": "Passing in the Coefficients",
+    "text": "Passing in the Coefficients\nIn order to retrieve the proper coefficients, the filter number was inputted based on a digital input from the MCU. Thus, based on what the user selects, the code will then retrieve the set of 128 coefficients that correspond to the filter value that they requested. This was done by saving a .txt file with all 2048 coefficients (128 coefficients per filter, 16 different filter options), and then storing the desired coefficients synchronously in BRAM. An FSM is used to retrieve all 128 coefficients on each clock cycle that will then be used to digitally filter the signal."
   }
 ]
