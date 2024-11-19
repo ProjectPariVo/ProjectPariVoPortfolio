@@ -2,14 +2,11 @@
 title: "ProjectParivo"
 image: images/teamPhoto.jpeg
 about:
-    template: jolla
-    # links:
-    #     - icon: linkedin
-    #       text: LinkedIn
-    #       href: https://www.linkedin.com/in/martha-victoria-parizot/
-    #     - icon: github
-    #       text: GitHub
-    #       href: https://github.com/vparizot
+    template: marquee
+    links:
+        - icon: github
+          text: GitHub
+          href: https://github.com/vparizot/pariVo
 ---
 <!-- Templates: https://quarto.org/docs/websites/website-about.html -->
 
