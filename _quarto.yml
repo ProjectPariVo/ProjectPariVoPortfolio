@@ -12,13 +12,13 @@ website:
         menu:
         - text: ProjectParivo Project Updates
         - text: Project Proposal
-          href: currentstatus/proposal.qmd
+          href: currentStatus/proposal.qmd
         - text: Digital Filtering
-          href: currentstatus/digitalFiltering.qmd
+          href: currentStatus/digitalFiltering.qmd
         - text: Communication Protocols
-          href: currentstatus/fpgaToMcu.qmd
+          href: currentStatus/fpgaToMcu.qmd
         - text: Outputting Audio
-          href: currentstatus/dmaToDac.qmd
+          href: currentStatus/dmaToDac.qmd
 
 
 format:
