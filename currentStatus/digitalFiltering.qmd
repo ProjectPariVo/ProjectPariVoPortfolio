@@ -1,0 +1,19 @@
+---
+title: "Digital Filtering"
+description: "Applying Finite Impulse Response (FIR) to implement EQ filters"
+author: "Victoria Parizot & Audrey Vo"
+date: "11/19/24"
+# categories:
+#   - Final Project
+#   - Brainstorm
+draft: false
+---
+
+## Digital Filtering (MCU ADC, SPI from MCU and FPGA, FIR Coefficient generation)
+We have set up the onboard MCU ADC to read in the four external potentiometer values and used SPI to transfer these EQ values to the FPGA to be used for digital filtering. We have opted for Finite Impulse Response (FIR) to apply low and high pass filters to the audio data that we will read in from the PCM1808 DAC. The EQ values correspond to 16 buckets between 0 to 20 kHz (the range of human hearing), with each bucket ranging 1.25 kHz (20 kHz/16). Thus, the EQ value influences the passband and stopband of the filters. To implement FIR, we have generated and tested the integer coefficients for the desired filters in Matlab and exported them as a .txt file. The filters will have 128 taps, a number derived from preliminary testing to find the minimum number of taps needed to create the desired filters. The .txt file of coefficients is read into the FPGA using an FSM and similar logic as sbox_sync in lab 7. 
+
+## Communicating EQ Values to FPGA
+
+## Generating Coefficients
+
+      
