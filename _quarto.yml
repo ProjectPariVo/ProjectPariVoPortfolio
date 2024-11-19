@@ -1,0 +1,31 @@
+project:
+  type: website
+
+website:
+  title: "Project PariVo"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+      - text: Project Status
+        menu:
+        - text: ProjectParivo Project Updates
+        - text: Project Proposal
+          href: currentstatus/proposal.qmd
+        - text: Digital Filtering
+          href: currentstatus/digitalFiltering.qmd
+        - text: Communication Protocols
+          href: currentstatus/fpgaToMcu.qmd
+        - text: Outputting Audio
+          href: currentstatus/dmaToDac.qmd
+
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+
+
