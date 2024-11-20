@@ -41,7 +41,6 @@ We then confirmed the design of these filters by creating a signal with multiple
 
 ![Output and original signal](images/outputSig.png) 
 
-
 ## Passing in the Coefficients
 In order to retrieve the proper coefficients, the filter number was inputted based on a digital input from the MCU. Thus, based on what the user selects, the code will then retrieve the set of 128 coefficients that correspond to the filter value that they requested. This was done by saving a .txt file with all 2048 coefficients (128 coefficients per filter, 16 different filter options), and then storing the desired coefficients synchronously in BRAM. An FSM is used to retrieve all 128 coefficients on each clock cycle that will then be used to digitally filter the signal. 
 

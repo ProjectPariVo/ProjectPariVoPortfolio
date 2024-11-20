@@ -1,0 +1,14 @@
+---
+title: "FPGA to MCU"
+description: "Communication Protocols: SPI & I2S"
+author: "Victoria Parizot & Audrey Vo"
+date: "11/19/24"
+# categories:
+#   - Final Project
+#   - Brainstorm
+draft: false
+---
+## SPI Protocol
+The microcontroller takes in an analog signal from the potentiometer, then converts that value into digital signals using the on-board ADC. The clock speed at which is running  at a clock speed of 4 MHz. The MCU then sends the signal to the FPGA using SPI communication.
+
+## I2S Protocol to Pass AUdio

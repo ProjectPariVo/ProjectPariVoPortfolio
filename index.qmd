@@ -1,6 +1,6 @@
 ---
 title: "ProjectParivo"
-image: images/teamPhoto.jpeg
+image: images/pariVo.jpeg
 about:
     template: marquee
     links:

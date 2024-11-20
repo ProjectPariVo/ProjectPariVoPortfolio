@@ -1,0 +1,41 @@
+---
+title: "Project Overview"
+description: "Overview of System"
+author: "Victoria Parizot & Audrey Vo"
+date: "11/19/24"
+# categories:
+#   - Final Project
+#   - Brainstorm
+draft: false
+---
+
+## Motivation 
+Harvey Mudd College includes a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a functional deck so that we could perform for our friends.
+
+Insight into how we came up with this project can be found in Victoria's [blog](https://vparizot.github.io/hmc-e155-portfolio/posts/post6.html).
+
+## Problem Statement
+Our overarching goal for this project is to build an operational DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of two input audio files based on physical inputs from the user. 
+
+## Objectives
+The objectives of this project is below. 
+
+<ul>
+<li>Use an external ADC to read in a Stereo file into the FPGA</li>
+<li>Communicate audio data between the MCU and FPGA</li>
+<li>Implement low pass and high pass digital filters using the FPGA</li>
+<li>Vary audio volume based on user gain inputs</li>
+<li>Output the manipulated audio onto speakers</li>
+</ul>
+
+## System Overview
+The project is split between the MCU and FPGA. The MCU is in charge of (1) interpreting and transferring the user input EQ values to the FPGA and (2) outputing the manipulated audio data with the onboard DAC with DMA. The FPGA acts as (1) the controller to PCM1808 ADC to read in audio and (2) implements digital filters to the data based on EQ values from the MCU. To communicate between the MCU and FPGA we use SPI for the EQ values and I2S for audio data. 
+
+The system is described in the block diagram and wiring diagram below. 
+
+![Block Diagram for Project PariVo](images/BlockDiagram.jpeg) 
+
+![Wiring Schematic for Project PariVo](images/WiringDiagram.jpeg) 
+
+More information on specific functionalities can be found under "Project Status".
+

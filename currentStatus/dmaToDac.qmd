@@ -1,0 +1,12 @@
+---
+title: "Outputting Audio"
+description: "Onboard MCU DAC with DMA to Output Audio"
+author: "Victoria Parizot & Audrey Vo"
+date: "11/19/24"
+# categories:
+#   - Final Project
+#   - Brainstorm
+draft: false
+---
+
+To read out the digital audio onto speakers, we will use the onboard MCU DAC with Direct Memory Access (DMA). The DAC has two channels, which we will use to output the two audio signals. We plan to use DMA with a circular buffer to read out the I2S audio data, as this will allow us more flexibility with the timing within the system. Thus, we need to ensure that the input and output rates are equivalent. 

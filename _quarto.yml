@@ -7,21 +7,20 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
       - text: Project Status
         menu:
         - text: ProjectParivo Project Updates
-        - text: Project Proposal
-          href: currentStatus/proposal.qmd
+        - text: Project Overview
+          href: currentStatus/systemOverview.qmd
+        - text: Reading in Stereo Audio
+          href: currentStatus/inputAudio.qmd
         - text: Digital Filtering
           href: currentStatus/digitalFiltering.qmd
-        - text: Communication Protocols
+        - text: FPGA and MCU Communication
           href: currentStatus/fpgaToMcu.qmd
         - text: Outputting Audio
           href: currentStatus/dmaToDac.qmd
           
-
-
 format:
   html:
     theme: cosmo
