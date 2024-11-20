@@ -1,31 +1,45 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "currentStatus/dmaToDac.html",
+    "href": "currentStatus/dmaToDac.html",
+    "title": "Outputting Audio",
     "section": "",
-    "text": "About this site"
+    "text": "To read out the digital audio onto speakers, we will use the onboard MCU DAC with Direct Memory Access (DMA). The DAC has two channels, which we will use to output the two audio signals. We plan to use DMA with a circular buffer to read out the I2S audio data, as this will allow us more flexibility with the timing within the system. Thus, we need to ensure that the input and output rates are equivalent."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ProjectParivo",
+    "objectID": "currentStatus/systemOverview.html",
+    "href": "currentStatus/systemOverview.html",
+    "title": "Project Overview",
     "section": "",
-    "text": "Harvey Mudd College supplies a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a low-cost, functional deck so that we could perform for our friends. Therfore, this project seeks to build an operational two-channel DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of two input audio files based on physical inputs from the user. The FPGA will apply Finite Impule Response (FIR) digital filtering to the audio, based on user choosen EQ values passed in through the MCU. I2S protocols will be used to pass the audio into the FPGA and from the FPGA to the MCU. The onboard MCU DAC with Direct Memory Access (DMA) will output the manipulated audio to speakers."
+    "text": "Harvey Mudd College includes a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a functional deck so that we could perform for our friends.\nInsight into how we came up with this project can be found in Victoria’s blog."
   },
   {
-    "objectID": "index.html#abstract",
-    "href": "index.html#abstract",
-    "title": "ProjectParivo",
+    "objectID": "currentStatus/systemOverview.html#motivation",
+    "href": "currentStatus/systemOverview.html#motivation",
+    "title": "Project Overview",
     "section": "",
-    "text": "Harvey Mudd College supplies a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a low-cost, functional deck so that we could perform for our friends. Therfore, this project seeks to build an operational two-channel DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of two input audio files based on physical inputs from the user. The FPGA will apply Finite Impule Response (FIR) digital filtering to the audio, based on user choosen EQ values passed in through the MCU. I2S protocols will be used to pass the audio into the FPGA and from the FPGA to the MCU. The onboard MCU DAC with Direct Memory Access (DMA) will output the manipulated audio to speakers."
+    "text": "Harvey Mudd College includes a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a functional deck so that we could perform for our friends.\nInsight into how we came up with this project can be found in Victoria’s blog."
   },
   {
-    "objectID": "index.html#about-us",
-    "href": "index.html#about-us",
-    "title": "ProjectParivo",
-    "section": "About Us",
-    "text": "About Us\nAudrey and Victoria are seniors at Harvey Mudd College, majoring in engineering, and passionate about music. For their E155 (AKA MicroPs) Final Project, they are working together to create a two-channel DJ mixer. Ultimately, they hope to DJ together with their mixer.\n\nVictoria Parizot - Norwalk, CT\nVictoria Parizot is most interested with mechanical and electrical design, and excited to be taking MicroPs this semester! At Harvey Mudd, she is a West Dorm President, a Machine Shop Proctor, and a Member of Tau Beta Pi Honors Society. In her free time, she enjoys woodworking, taking and developing film photos, and sailing.\nTake a look at her Portfolio to learn more!\n\n\nAudrey Vo - Valley Girl, CA\nAudrey is an APISPAM Head Sponsor, Atwood Dorm President, and Machine Shop Proctor at Harvey Mudd. The past few summers, she has been able to participate in summer research with Prof. Dodds in “Summer Start-Up” and with Prof. Gokli as part of the Riggs Fellowship. She was previously HMC 2025 Class President and also a member of the Prisoner Education Project.\nAudrey is currently a resident of Southern California, and have lived here her entire life. (If you have any recommendations of things to do in CA, please let Audrey know!). In her free time, she love to play pickleball, try new foods, and spend time with friends.\nIf you are interested in learning more about Audrey, please feel free to connect on LinkedIn or explore her portfolio!"
+    "objectID": "currentStatus/systemOverview.html#problem-statement",
+    "href": "currentStatus/systemOverview.html#problem-statement",
+    "title": "Project Overview",
+    "section": "Problem Statement",
+    "text": "Problem Statement\nOur overarching goal for this project is to build an operational DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of two input audio files based on physical inputs from the user."
+  },
+  {
+    "objectID": "currentStatus/systemOverview.html#objectives",
+    "href": "currentStatus/systemOverview.html#objectives",
+    "title": "Project Overview",
+    "section": "Objectives",
+    "text": "Objectives\nThe objectives of this project is below.\n\n\nUse an external ADC to read in a Stereo file into the FPGA\n\n\nCommunicate audio data between the MCU and FPGA\n\n\nImplement low pass and high pass digital filters using the FPGA\n\n\nVary audio volume based on user gain inputs\n\n\nOutput the manipulated audio onto speakers"
+  },
+  {
+    "objectID": "currentStatus/systemOverview.html#system-overview",
+    "href": "currentStatus/systemOverview.html#system-overview",
+    "title": "Project Overview",
+    "section": "System Overview",
+    "text": "System Overview\nThe project is split between the MCU and FPGA. The MCU is in charge of (1) interpreting and transferring the user input EQ values to the FPGA and (2) outputing the manipulated audio data with the onboard DAC with DMA. The FPGA acts as (1) the controller to PCM1808 ADC to read in audio and (2) implements digital filters to the data based on EQ values from the MCU. To communicate between the MCU and FPGA we use SPI for the EQ values and I2S for audio data.\nThe system is described in the block diagram and wiring diagram below.\n\n\n\nBlock Diagram for Project PariVo\n\n\n\n\n\nWiring Schematic for Project PariVo\n\n\nMore information on specific functionalities can be found under “Project Status”."
   },
   {
     "objectID": "currentStatus/digitalFiltering.html",
@@ -61,5 +75,61 @@
     "title": "Digital Filtering",
     "section": "Passing in the Coefficients",
     "text": "Passing in the Coefficients\nIn order to retrieve the proper coefficients, the filter number was inputted based on a digital input from the MCU. Thus, based on what the user selects, the code will then retrieve the set of 128 coefficients that correspond to the filter value that they requested. This was done by saving a .txt file with all 2048 coefficients (128 coefficients per filter, 16 different filter options), and then storing the desired coefficients synchronously in BRAM. An FSM is used to retrieve all 128 coefficients on each clock cycle that will then be used to digitally filter the signal."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ProjectParivo",
+    "section": "",
+    "text": "Harvey Mudd College supplies a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a low-cost, functional deck so that we could perform for our friends. Therfore, this project seeks to build an operational two-channel DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of two input audio files based on physical inputs from the user. The FPGA will apply Finite Impule Response (FIR) digital filtering to the audio, based on user choosen EQ values passed in through the MCU. I2S protocols will be used to pass the audio into the FPGA and from the FPGA to the MCU. The onboard MCU DAC with Direct Memory Access (DMA) will output the manipulated audio to speakers."
+  },
+  {
+    "objectID": "index.html#abstract",
+    "href": "index.html#abstract",
+    "title": "ProjectParivo",
+    "section": "",
+    "text": "Harvey Mudd College supplies a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a low-cost, functional deck so that we could perform for our friends. Therfore, this project seeks to build an operational two-channel DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of two input audio files based on physical inputs from the user. The FPGA will apply Finite Impule Response (FIR) digital filtering to the audio, based on user choosen EQ values passed in through the MCU. I2S protocols will be used to pass the audio into the FPGA and from the FPGA to the MCU. The onboard MCU DAC with Direct Memory Access (DMA) will output the manipulated audio to speakers."
+  },
+  {
+    "objectID": "index.html#about-us",
+    "href": "index.html#about-us",
+    "title": "ProjectParivo",
+    "section": "About Us",
+    "text": "About Us\nAudrey and Victoria are seniors at Harvey Mudd College, majoring in engineering, and passionate about music. For their E155 (AKA MicroPs) Final Project, they are working together to create a two-channel DJ mixer. Ultimately, they hope to DJ together with their mixer.\n\nVictoria Parizot - Norwalk, CT\nVictoria Parizot is most interested with mechanical and electrical design, and excited to be taking MicroPs this semester! At Harvey Mudd, she is a West Dorm President, a Machine Shop Proctor, and a Member of Tau Beta Pi Honors Society. In her free time, she enjoys woodworking, taking and developing film photos, and sailing.\nTake a look at her Portfolio to learn more!\n\n\nAudrey Vo - Valley Girl, CA\nAudrey is an APISPAM Head Sponsor, Atwood Dorm President, and Machine Shop Proctor at Harvey Mudd. The past few summers, she has been able to participate in summer research with Prof. Dodds in “Summer Start-Up” and with Prof. Gokli as part of the Riggs Fellowship. She was previously HMC 2025 Class President and also a member of the Prisoner Education Project.\nAudrey is currently a resident of Southern California, and have lived here her entire life. (If you have any recommendations of things to do in CA, please let Audrey know!). In her free time, she love to play pickleball, try new foods, and spend time with friends.\nIf you are interested in learning more about Audrey, please feel free to connect on LinkedIn or explore her portfolio!"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "currentStatus/fpgaToMcu.html",
+    "href": "currentStatus/fpgaToMcu.html",
+    "title": "FPGA to MCU",
+    "section": "",
+    "text": "The microcontroller takes in an analog signal from the potentiometer, then converts that value into digital signals using the on-board ADC. The clock speed at which is running at a clock speed of 4 MHz. The MCU then sends the signal to the FPGA using SPI communication."
+  },
+  {
+    "objectID": "currentStatus/fpgaToMcu.html#spi-protocol",
+    "href": "currentStatus/fpgaToMcu.html#spi-protocol",
+    "title": "FPGA to MCU",
+    "section": "",
+    "text": "The microcontroller takes in an analog signal from the potentiometer, then converts that value into digital signals using the on-board ADC. The clock speed at which is running at a clock speed of 4 MHz. The MCU then sends the signal to the FPGA using SPI communication."
+  },
+  {
+    "objectID": "currentStatus/fpgaToMcu.html#i2s-protocol-to-pass-audio",
+    "href": "currentStatus/fpgaToMcu.html#i2s-protocol-to-pass-audio",
+    "title": "FPGA to MCU",
+    "section": "I2S Protocol to Pass AUdio",
+    "text": "I2S Protocol to Pass AUdio"
+  },
+  {
+    "objectID": "currentStatus/inputAudio.html",
+    "href": "currentStatus/inputAudio.html",
+    "title": "Reading in Audio",
+    "section": "",
+    "text": "To read in the audio into the FPGA, we need to use an Analog to Digital Converter (ADC) to convert analog stereo audio into digital data that our FPGA can manipulate. We opted to use the PCM1808, a 24-bit stereo ADC with I2S functionality. We will pass in the two different audio channels into the left and right channels, with the FPGA acting as the controller. The wiring diagram between the FPGA and PCM1808 ADC is outlines how the ADC interfaces with our system. Note that MD1, MD0, and FMT are set low with a pull-down resistor to set the PCM1808 as the worker with an I2S 24-bit data format.\n\n\n\nOriginal signal with multiple frequency components\n\n\nI confirm that the audio data is being read with I2S using a logic analyzer. Below are the traces for various audio gains, where D2 connected to DOUT, D4 to BCK, D6 to LRCK, and D7 to SCKI. I set the clock to 12 MHz, therby setting the sampling frequency to be 46.875 kHz, as defined by the SCK. The Left/Right clock is set to 3 MHz, where 24 pulses from bck occur every clock cycle. This is confirmed with the oscilloscope traces. The DOUT shows the digital output of the input audio signal. Since I2S encodes the amplitude into 24-bit values, we would expect lower volumes of music to have smaller 24-bit digital values. This behavior is demonstrated in the following traces, where as we decrease the volume, the MSB is lower and lower.\n\n\n\nDigital output of signal with volume at 0%\n\n\n\n\n\nDigital output of signal with volume at 25%\n\n\n\n\n\nDigital output of signal with volume at 50%\n\n\n\n\n\nDigital output of signal with volume at 100%"
   }
 ]

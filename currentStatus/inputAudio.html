@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Victoria Parizot &amp; Audrey Vo">
+<meta name="dcterms.date" content="2024-11-19">
+<meta name="description" content="Reading in Stereo Audio with the PCM1808 ADC into the FPGA">
 
-<title>ProjectParivo – Project PariVo</title>
+<title>Reading in Audio – Project PariVo</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,21 +26,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -67,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -77,7 +81,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Project PariVo</span>
     </a>
   </div>
@@ -88,7 +92,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -98,23 +102,23 @@ ul.task-list li input[type="checkbox"] {
     <ul class="dropdown-menu" aria-labelledby="nav-menu-project-status">    
         <li class="dropdown-header">ProjectParivo Project Updates</li>
         <li>
-    <a class="dropdown-item" href="./currentStatus/systemOverview.html">
+    <a class="dropdown-item" href="../currentStatus/systemOverview.html">
  <span class="dropdown-text">Project Overview</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./currentStatus/inputAudio.html">
+    <a class="dropdown-item" href="../currentStatus/inputAudio.html">
  <span class="dropdown-text">Reading in Stereo Audio</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./currentStatus/digitalFiltering.html">
+    <a class="dropdown-item" href="../currentStatus/digitalFiltering.html">
  <span class="dropdown-text">Digital Filtering</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./currentStatus/fpgaToMcu.html">
+    <a class="dropdown-item" href="../currentStatus/fpgaToMcu.html">
  <span class="dropdown-text">FPGA and MCU Communication</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./currentStatus/dmaToDac.html">
+    <a class="dropdown-item" href="../currentStatus/dmaToDac.html">
  <span class="dropdown-text">Outputting Audio</span></a>
   </li>  
     </ul>
@@ -130,66 +134,84 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-  <ul>
-  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
-  <li><a href="#about-us" id="toc-about-us" class="nav-link" data-scroll-target="#about-us">About Us</a>
-  <ul class="collapse">
-  <li><a href="#victoria-parizot---norwalk-ct" id="toc-victoria-parizot---norwalk-ct" class="nav-link" data-scroll-target="#victoria-parizot---norwalk-ct">Victoria Parizot - Norwalk, CT</a></li>
-  <li><a href="#audrey-vo---valley-girl-ca" id="toc-audrey-vo---valley-girl-ca" class="nav-link" data-scroll-target="#audrey-vo---valley-girl-ca">Audrey Vo - Valley Girl, CA</a></li>
-  </ul></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
-<div class="quarto-about-marquee">
-  <div class="about-image-container">
-    <img src="images/pariVo.jpeg" class="about-image " style="width: 100%;">
-  </div>
-  <div class="about-contents">
-    <header id="title-block-header" class="quarto-title-block default">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">ProjectParivo</h1>
+<h1 class="title">Reading in Audio</h1>
 </div>
+
+<div>
+  <div class="description">
+    Reading in Stereo Audio with the PCM1808 ADC into the FPGA
+  </div>
+</div>
+
+
 <div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Victoria Parizot &amp; Audrey Vo </p>
+          </div>
   </div>
-</header> <main class="content" id="quarto-document-content">
-
-<!-- Templates: https://quarto.org/docs/websites/website-about.html -->
-<section id="abstract" class="level2">
-<h2 data-anchor-id="abstract">Abstract</h2>
-<p>Harvey Mudd College supplies a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a low-cost, functional deck so that we could perform for our friends. Therfore, this project seeks to build an operational two-channel DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of two input audio files based on physical inputs from the user. The FPGA will apply Finite Impule Response (FIR) digital filtering to the audio, based on user choosen EQ values passed in through the MCU. I2S protocols will be used to pass the audio into the FPGA and from the FPGA to the MCU. The onboard MCU DAC with Direct Memory Access (DMA) will output the manipulated audio to speakers.</p>
-</section>
-<section id="about-us" class="level2">
-<h2 data-anchor-id="about-us">About Us</h2>
-<p>Audrey and Victoria are seniors at <a href="https://hmc.edu">Harvey Mudd College</a>, majoring in engineering, and passionate about music. For their E155 (AKA MicroPs) Final Project, they are working together to create a two-channel DJ mixer. Ultimately, they hope to DJ together with their mixer.</p>
-<section id="victoria-parizot---norwalk-ct" class="level3">
-<h3 data-anchor-id="victoria-parizot---norwalk-ct">Victoria Parizot - Norwalk, CT</h3>
-<p>Victoria Parizot is most interested with mechanical and electrical design, and excited to be taking MicroPs this semester! At Harvey Mudd, she is a West Dorm President, a Machine Shop Proctor, and a Member of Tau Beta Pi Honors Society. In her free time, she enjoys woodworking, taking and developing film photos, and sailing.</p>
-<p>Take a look at her <a href="https://vparizot.github.io/hmc-e155-portfolio/">Portfolio</a> to learn more!</p>
-</section>
-<section id="audrey-vo---valley-girl-ca" class="level3">
-<h3 data-anchor-id="audrey-vo---valley-girl-ca">Audrey Vo - Valley Girl, CA</h3>
-<p>Audrey is an APISPAM Head Sponsor, Atwood Dorm President, and Machine Shop Proctor at Harvey Mudd. The past few summers, she has been able to participate in summer research with Prof.&nbsp;Dodds in “Summer Start-Up” and with Prof.&nbsp;Gokli as part of the Riggs Fellowship. She was previously HMC 2025 Class President and also a member of the Prisoner Education Project.</p>
-<p>Audrey is currently a resident of Southern California, and have lived here her entire life. (If you have any recommendations of things to do in CA, please let Audrey know!). In her free time, she love to play pickleball, try new foods, and spend time with friends.</p>
-<p>If you are interested in learning more about Audrey, please feel free to connect on <a href="https://www.linkedin.com/in/audrey-vo-us23/">LinkedIn</a> or explore her <a href="https://audreyvo23.github.io/hmc-e155-portfolio/">portfolio</a>!</p>
-
-
-</section>
-</section>
-</main> 
-    <div class="about-footer"><div class="about-links">
-  <a href="https://github.com/vparizot/pariVo" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">GitHub</span>
-  </a>
-</div>
-</div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 19, 2024</p>
+    </div>
   </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>To read in the audio into the FPGA, we need to use an Analog to Digital Converter (ADC) to convert analog stereo audio into digital data that our FPGA can manipulate. We opted to use the <a href="https://www.ti.com/lit/ds/symlink/pcm1808.pdf?ts=1732053094807&amp;ref_url=https%253A%252F%252Fwww.google.com%252F">PCM1808</a>, a 24-bit stereo ADC with I2S functionality. We will pass in the two different audio channels into the left and right channels, with the FPGA acting as the controller. The wiring diagram between the FPGA and PCM1808 ADC is outlines how the ADC interfaces with our system. Note that MD1, MD0, and FMT are set low with a pull-down resistor to set the PCM1808 as the worker with an I2S 24-bit data format.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/PCMwiringDiagram.jpeg" class="img-fluid figure-img"></p>
+<figcaption>Original signal with multiple frequency components</figcaption>
+</figure>
 </div>
- <!-- /main -->
+<p>I confirm that the audio data is being read with I2S using a logic analyzer. Below are the traces for various audio gains, where D2 connected to DOUT, D4 to BCK, D6 to LRCK, and D7 to SCKI. I set the clock to 12 MHz, therby setting the sampling frequency to be 46.875 kHz, as defined by the SCK. The Left/Right clock is set to 3 MHz, where 24 pulses from bck occur every clock cycle. This is confirmed with the oscilloscope traces. The DOUT shows the digital output of the input audio signal. Since I2S encodes the amplitude into 24-bit values, we would expect lower volumes of music to have smaller 24-bit digital values. This behavior is demonstrated in the following traces, where as we decrease the volume, the MSB is lower and lower.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/i2svol0.png" class="img-fluid figure-img"></p>
+<figcaption>Digital output of signal with volume at 0%</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/i2svol25.png" class="img-fluid figure-img"></p>
+<figcaption>Digital output of signal with volume at 25%</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/i2svol50.png" class="img-fluid figure-img"></p>
+<figcaption>Digital output of signal with volume at 50%</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/i2svol100.png" class="img-fluid figure-img"></p>
+<figcaption>Digital output of signal with volume at 100%</figcaption>
+</figure>
+</div>
+
+
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -210,6 +232,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     

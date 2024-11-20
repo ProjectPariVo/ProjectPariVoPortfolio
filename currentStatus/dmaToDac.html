@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Victoria Parizot &amp; Audrey Vo">
+<meta name="dcterms.date" content="2024-11-19">
+<meta name="description" content="Onboard MCU DAC with DMA to Output Audio">
 
-<title>dmatodac – Project PariVo</title>
+<title>Outputting Audio – Project PariVo</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -92,10 +95,6 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
-<span class="menu-text">About</span></a>
-  </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-project-status" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Project Status</span>
@@ -103,8 +102,12 @@ ul.task-list li input[type="checkbox"] {
     <ul class="dropdown-menu" aria-labelledby="nav-menu-project-status">    
         <li class="dropdown-header">ProjectParivo Project Updates</li>
         <li>
-    <a class="dropdown-item" href="../currentStatus/proposal.html">
- <span class="dropdown-text">Project Proposal</span></a>
+    <a class="dropdown-item" href="../currentStatus/systemOverview.html">
+ <span class="dropdown-text">Project Overview</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../currentStatus/inputAudio.html">
+ <span class="dropdown-text">Reading in Stereo Audio</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../currentStatus/digitalFiltering.html">
@@ -112,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../currentStatus/fpgaToMcu.html">
- <span class="dropdown-text">Communication Protocols</span></a>
+ <span class="dropdown-text">FPGA and MCU Communication</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../currentStatus/dmaToDac.html">
@@ -137,9 +140,43 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Outputting Audio</h1>
+</div>
+
+<div>
+  <div class="description">
+    Onboard MCU DAC with DMA to Output Audio
+  </div>
+</div>
 
 
+<div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Victoria Parizot &amp; Audrey Vo </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 19, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>To read out the digital audio onto speakers, we will use the onboard MCU DAC with Direct Memory Access (DMA). The DAC has two channels, which we will use to output the two audio signals. We plan to use DMA with a circular buffer to read out the I2S audio data, as this will allow us more flexibility with the timing within the system. Thus, we need to ensure that the input and output rates are equivalent.</p>
 
 
 

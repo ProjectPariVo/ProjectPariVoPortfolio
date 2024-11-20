@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ProjectPariVo.github.io/ProjectParivoPortfolio/currentStatus/proposal.html</loc>
-    <lastmod>2024-11-19T20:41:16.227Z</lastmod>
+    <loc>https://ProjectPariVo.github.io/ProjectParivoPortfolio/currentStatus/dmaToDac.html</loc>
+    <lastmod>2024-11-20T00:59:01.974Z</lastmod>
   </url>
   <url>
-    <loc>https://ProjectPariVo.github.io/ProjectParivoPortfolio/currentStatus/fpgaToMcu.html</loc>
-    <lastmod>2024-11-19T20:41:53.915Z</lastmod>
+    <loc>https://ProjectPariVo.github.io/ProjectParivoPortfolio/currentStatus/systemOverview.html</loc>
+    <lastmod>2024-11-20T00:51:09.494Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ProjectPariVo.github.io/ProjectParivoPortfolio/currentStatus/digitalFiltering.html</loc>
+    <lastmod>2024-11-20T00:51:07.636Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ProjectPariVo.github.io/ProjectParivoPortfolio/index.html</loc>
+    <lastmod>2024-11-19T21:59:12.329Z</lastmod>
   </url>
   <url>
     <loc>https://ProjectPariVo.github.io/ProjectParivoPortfolio/about.html</loc>
     <lastmod>2024-11-19T20:30:00.219Z</lastmod>
   </url>
   <url>
-    <loc>https://ProjectPariVo.github.io/ProjectParivoPortfolio/index.html</loc>
-    <lastmod>2024-11-19T20:54:57.503Z</lastmod>
+    <loc>https://ProjectPariVo.github.io/ProjectParivoPortfolio/currentStatus/fpgaToMcu.html</loc>
+    <lastmod>2024-11-19T22:02:15.204Z</lastmod>
   </url>
   <url>
-    <loc>https://ProjectPariVo.github.io/ProjectParivoPortfolio/currentStatus/digitalFiltering.html</loc>
-    <lastmod>2024-11-19T21:52:40.160Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ProjectPariVo.github.io/ProjectParivoPortfolio/currentStatus/dmaToDac.html</loc>
-    <lastmod>2024-11-19T20:42:03.325Z</lastmod>
+    <loc>https://ProjectPariVo.github.io/ProjectParivoPortfolio/currentStatus/inputAudio.html</loc>
+    <lastmod>2024-11-20T02:38:15.177Z</lastmod>
   </url>
 </urlset>
