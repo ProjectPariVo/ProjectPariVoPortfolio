@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Victoria Parizot &amp; Audrey Vo">
-<meta name="dcterms.date" content="2024-11-19">
-<meta name="description" content="Overview of System">
+<meta name="dcterms.date" content="2024-12-09">
+<meta name="description" content="Brief Overview of System, Goals, and Materials">
 
-<title>Project Overview – Project PariVo</title>
+<title>System Overview &amp; Documentation – Project PariVo</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -100,26 +100,26 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Project Status</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-project-status">    
-        <li class="dropdown-header">ProjectParivo Project Updates</li>
+        <li class="dropdown-header">Project Parivo Project</li>
         <li>
     <a class="dropdown-item" href="../currentStatus/systemOverview.html">
- <span class="dropdown-text">Project Overview</span></a>
+ <span class="dropdown-text">System Overview &amp; Documentation</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../currentStatus/inputAudio.html">
- <span class="dropdown-text">Reading in Stereo Audio</span></a>
+    <a class="dropdown-item" href="../currentStatus/fpgaDesign.html">
+ <span class="dropdown-text">FPGA Design</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../currentStatus/digitalFiltering.html">
- <span class="dropdown-text">Digital Filtering</span></a>
+    <a class="dropdown-item" href="../currentStatus/mcuDesign.html">
+ <span class="dropdown-text">MCU Design</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../currentStatus/fpgaToMcu.html">
  <span class="dropdown-text">FPGA and MCU Communication</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../currentStatus/dmaToDac.html">
- <span class="dropdown-text">Outputting Audio</span></a>
+    <a class="dropdown-item" href="../currentStatus/resultsAndAnalysis.html">
+ <span class="dropdown-text">Results &amp; Analysis of System</span></a>
   </li>  
     </ul>
   </li>
@@ -143,6 +143,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#problem-statement" id="toc-problem-statement" class="nav-link" data-scroll-target="#problem-statement">Problem Statement</a></li>
   <li><a href="#objectives" id="toc-objectives" class="nav-link" data-scroll-target="#objectives">Objectives</a></li>
   <li><a href="#system-overview" id="toc-system-overview" class="nav-link" data-scroll-target="#system-overview">System Overview</a></li>
+  <li><a href="#bill-of-materials" id="toc-bill-of-materials" class="nav-link" data-scroll-target="#bill-of-materials">Bill of Materials</a></li>
   </ul>
 </nav>
     </div>
@@ -151,12 +152,12 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Project Overview</h1>
+<h1 class="title">System Overview &amp; Documentation</h1>
 </div>
 
 <div>
   <div class="description">
-    Overview of System
+    Brief Overview of System, Goals, and Materials
   </div>
 </div>
 
@@ -173,7 +174,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 19, 2024</p>
+      <p class="date">December 9, 2024</p>
     </div>
   </div>
   
@@ -217,7 +218,7 @@ Output the manipulated audio onto speakers
 </section>
 <section id="system-overview" class="level2">
 <h2 class="anchored" data-anchor-id="system-overview">System Overview</h2>
-<p>The project is split between the MCU and FPGA. The MCU is in charge of (1) interpreting and transferring the user input EQ values to the FPGA and (2) outputing the manipulated audio data with the onboard DAC with DMA. The FPGA acts as (1) the controller to PCM1808 ADC to read in audio and (2) implements digital filters to the data based on EQ values from the MCU. To communicate between the MCU and FPGA we use SPI for the EQ values and I2S for audio data.</p>
+<p>The project is split between the MCU and FPGA. The MCU is in charge of (1) outputing the manipulated audio data with the onboard DAC with DMA, (2) interpreting and transferring the user input EQ values to the FPGA, and (3) acting as the controller for SPI communication. The FPGA acts as (1) the controller to PCM1808 ADC to read in audio and (2) implements digital filters to the data based on EQ values from the MCU. To communicate between the MCU and FPGA we use SPI for both the EQ values and audio data.</p>
 <p>The system is described in the block diagram and wiring diagram below.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -231,7 +232,81 @@ Output the manipulated audio onto speakers
 <figcaption>Wiring Schematic for Project PariVo</figcaption>
 </figure>
 </div>
-<p>More information on specific functionalities can be found under “Project Status”.</p>
+</section>
+<section id="bill-of-materials" class="level2">
+<h2 class="anchored" data-anchor-id="bill-of-materials">Bill of Materials</h2>
+<table>
+<tbody><tr>
+<th>
+Item
+</th>
+<th>
+Part Number
+</th>
+<th>
+Quantity
+</th>
+<th>
+Cost per
+</th>
+</tr>
+<tr>
+<td>
+<a href="https://www.ti.com/lit/ds/symlink/pcm1808.pdf?HQS=dis-dk-null-digikeymode-dsf-pf-null-wwe&amp;ts=1733738047778&amp;ref_url=https%253A%252F%252Fwww.ti.com%252Fgeneral%252Fdocs%252Fsuppproductinfo.tsp%253FdistId%253D10%2526gotoUrl%253Dhttps%253A%252F%252Fwww.ti.com%252Flit%252Fgpn%252Fpcm1808">PWM1808 ADC Breakout Board</a>
+</td>
+<td>
+<a href="https://www.amazon.com/dp/B07X3QLWR8?ref=ppx_yo2ov_dt_b_fed_asin_title">PCM1808</a>
+</td>
+<td>
+1
+</td>
+<td>
+7.99
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://www.bourns.com/docs/Product-Datasheets/pta.pdf">10k Slide Potentiometer</a>
+</td>
+<td>
+<a href="https://www.digikey.com/en/products/detail/bourns-inc/PTA2043-2015CPB103/3781176">PTA2043-2015CPB103-ND</a>
+</td>
+<td>
+2
+</td>
+<td>
+$1.78
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://cdn-shop.adafruit.com/product-files/1699/STX3120.pdf">Breadboard-Friendly Stereo Headphone Jack</a>
+</td>
+<td>
+<a href="https://www.adafruit.com/product/1699">Product ID: 1699</a>
+</td>
+<td>
+3
+</td>
+<td>
+$0.95
+</td>
+</tr>
+<tr>
+<td>
+Aux Cable
+</td>
+<td>
+Sourced from stockroom
+</td>
+<td>
+3
+</td>
+<td>
+n/a
+</td>
+</tr>
+</tbody></table>
 
 
 </section>
