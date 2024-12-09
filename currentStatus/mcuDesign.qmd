@@ -1,0 +1,23 @@
+---
+title: "MCU Design"
+description: ""
+author: "Victoria Parizot & Audrey Vo"
+date: "12/9/24"
+# categories:
+#   - Final Project
+#   - Brainstorm
+draft: false
+---
+The microcontroller held two roles in our system. First, it would output the audio, converting it from digital to analog. Second, it would pass the lowpass and highpass filter cutoff values to the FPGA. While we ultimately did not succeed in implementing digital filtering on the FPGA, the MCU fulfilled its role in sending over the filter cutoff values. 
+
+## Outputting Audio
+
+The MCU takes in 8-bit mono audio data from the FPGA using SPI and stores the value in memory. As the onboard Digital-to-Analog Converter (DAC) can only read positive voltages, we converted our signed values to unsigned values and stored the value into a variable named leftAudio. We then used the onboard MCU DAC with Direct Memory Access (DMA) to convert the digital data to an analog signal. The DMA transfer was initiated by a reload event of TIM7 and would move the value stored in leftAudio into the output register of the DAC. By setting DMA to circular mode, it would continuously read from the leftAudio variable, as it was updated by SPI. Therefore, it was imperative to ensure that the clock speed of both the FPGA and MCU would be fast enough as to not warp the audio. 
+
+To make our code scalable to stereo audio, we used both DAC1 and DAC2 and their corresponding DMA channels to output the audio to two separate pins, PA4 and PA5. This also allowed us the flexibility to manipulate the output analog audio with circuits to apply lowpass and highpass filters. 
+
+When we opted to use the onboard MCU DAC and SPI, we were hesitant of bringing down the audio data from 24-bit to 8-bit resolution, which would mean lowering the discrete levels of audio from 16,777,215 to 256. While this would not impact the maximum amplitude, it would reduce the precision and dynamic range. We decided the best way to test this would be by doing -- so we implemented the DAC and DMA with 8-bit resolution and tried to see if we could spot an audible difference. When testing with sine waves at different frequencies as well as our personal playlists, we could not tell the difference between the original audio versus the MCU output audio. Therefore, we decided that 8-bit audio would be sufficient. 
+
+
+## Filter Cutoff Values
+The microcontroller also takes in an analog signal from the potentiometer and then converts that value into digital signals using the on-board ADC. The clock speed at which is running at a clock speed of 12 MHz. The MCU then sends the signal to the FPGA using SPI communication.

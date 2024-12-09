@@ -1,8 +1,8 @@
 ---
-title: "Project Overview"
-description: "Overview of System"
+title: "System Overview & Documentation "
+description: "Brief Overview of System, Goals, and Materials"
 author: "Victoria Parizot & Audrey Vo"
-date: "11/19/24"
+date: "12/9/24"
 # categories:
 #   - Final Project
 #   - Brainstorm
@@ -29,7 +29,7 @@ The objectives of this project is below.
 </ul>
 
 ## System Overview
-The project is split between the MCU and FPGA. The MCU is in charge of (1) interpreting and transferring the user input EQ values to the FPGA and (2) outputing the manipulated audio data with the onboard DAC with DMA. The FPGA acts as (1) the controller to PCM1808 ADC to read in audio and (2) implements digital filters to the data based on EQ values from the MCU. To communicate between the MCU and FPGA we use SPI for the EQ values and I2S for audio data. 
+The project is split between the MCU and FPGA. The MCU is in charge of (1) outputing the manipulated audio data with the onboard DAC with DMA, (2) interpreting and transferring the user input EQ values to the FPGA, and (3) acting as the controller for SPI communication. The FPGA acts as (1) the controller to PCM1808 ADC to read in audio and (2) implements digital filters to the data based on EQ values from the MCU. To communicate between the MCU and FPGA we use SPI for both the EQ values and audio data. 
 
 The system is described in the block diagram and wiring diagram below. 
 
@@ -37,5 +37,39 @@ The system is described in the block diagram and wiring diagram below.
 
 ![Wiring Schematic for Project PariVo](images/WiringDiagram.jpeg) 
 
-More information on specific functionalities can be found under "Project Status".
+## Bill of Materials
+
+<table>
+  <tr>
+    <th>Item </th>
+    <th>Part Number</th>
+    <th>Quantity</th>
+    <th>Cost per</th>
+  </tr>
+  <tr>
+    <td> [PWM1808 ADC Breakout Board](https://www.ti.com/lit/ds/symlink/pcm1808.pdf?HQS=dis-dk-null-digikeymode-dsf-pf-null-wwe&ts=1733738047778&ref_url=https%253A%252F%252Fwww.ti.com%252Fgeneral%252Fdocs%252Fsuppproductinfo.tsp%253FdistId%253D10%2526gotoUrl%253Dhttps%253A%252F%252Fwww.ti.com%252Flit%252Fgpn%252Fpcm1808)  </td>
+    <td> [PCM1808](https://www.amazon.com/dp/B07X3QLWR8?ref=ppx_yo2ov_dt_b_fed_asin_title) </td>
+    <td>1</td>
+    <td>7.99</td>
+  </tr>
+  <tr>
+    <td> [10k Slide Potentiometer](https://www.bourns.com/docs/Product-Datasheets/pta.pdf) </td>
+    <td> [PTA2043-2015CPB103-ND](https://www.digikey.com/en/products/detail/bourns-inc/PTA2043-2015CPB103/3781176) </td>
+    <td>2</td>
+    <td>$1.78</td>
+  </tr>
+  <tr>
+    <td> [Breadboard-Friendly Stereo Headphone Jack](https://cdn-shop.adafruit.com/product-files/1699/STX3120.pdf) </td>
+    <td> [Product ID: 1699](https://www.adafruit.com/product/1699) </td>
+    <td>3</td>
+    <td>$0.95</td>
+  </tr>
+  <tr>
+    <td> Aux Cable </td>
+    <td> Sourced from stockroom </td>
+    <td>3</td>
+    <td> n/a </td>
+  </tr>
+</table>
+
 

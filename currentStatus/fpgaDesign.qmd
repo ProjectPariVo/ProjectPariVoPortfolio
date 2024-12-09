@@ -1,0 +1,74 @@
+---
+title: "FPGA Design"
+description: ""
+author: "Victoria Parizot & Audrey Vo"
+date: "12/9/24"
+# categories:
+#   - Final Project
+#   - Brainstorm
+draft: false
+---
+
+## FPGA design overview:
+The main design features of the FPGA is to receive digital audio from the external ADC, apply digital filters to the audio based on user inputs passed from the MCU, and then send the filtered audio to the MCU. The FPGA receives audio from the ADC using an I2S Communication Protocol, and then implements the onboard multiply-accumulator block (MAC) to the data and then outputs it. Due to time constraints, we were not able to implement digital filtering on our hardware, but we were able to get the desired behavior in ModelSim using the MAC. 
+
+# Reading in Audio
+
+To read in the audio into the FPGA, we need to use an Analog to Digital Converter (ADC) to convert analog stereo audio into digital data that our FPGA can manipulate. We opted to use the [PCM1808](https://www.ti.com/lit/ds/symlink/pcm1808.pdf?ts=1732053094807&ref_url=https%253A%252F%252Fwww.google.com%252F), a 24-bit stereo ADC with I2S functionality. We will pass in the two different audio channels into the left and right channels, with the FPGA acting as the controller. The wiring diagram between the FPGA and PCM1808 ADC is outlines how the ADC interfaces with our system. Note that MD1, MD0, and FMT are set low with a pull-down resistor to set the PCM1808 as the worker with an I2S 24-bit data format.
+
+![Original signal with multiple frequency components](images/PCMwiringDiagram.jpeg) 
+
+I confirm that the audio data is being read with I2S using a logic analyzer. Below are the traces for various audio gains, where D2 connected to DOUT, D4 to BCK, D6 to LRCK, and D7 to SCKI. I set the clock to 12 MHz, therby setting the sampling frequency to be 46.875 kHz, as defined by the SCK. The Left/Right clock is set to 3 MHz, where 24 pulses from bck occur every clock cycle. This is confirmed with the oscilloscope traces. The DOUT shows the digital output of the input audio signal. Since I2S encodes the amplitude into 24-bit values, we would expect lower volumes of music to have smaller 24-bit digital values. This behavior is demonstrated in the following traces, where as we decrease the volume, the MSB is lower and lower.
+
+![Digital output of signal with volume at 0%](images/i2svol0.png) 
+
+![Digital output of signal with volume at 25%](images/i2svol25.png) 
+
+![Digital output of signal with volume at 50%](images/i2svol50.png) 
+
+![Digital output of signal with volume at 100%](images/i2svol100.png) 
+
+
+# Digital Filtering
+To apply digital filtering of the output audio signal, we plan to utilize the MCU's onboard ADC to read user inputs, use SPI to communicate EQ values between the MCU and FPGA, and generate the necessary FIR Coefficients.
+
+We have set up the onboard MCU ADC to read in the four external potentiometer values and used SPI to transfer these EQ values to the FPGA to be used for digital filtering. We have opted for Finite Impulse Response (FIR) to apply low and high pass filters to the audio data that we will read in from the PCM1808 DAC. The EQ values correspond to 16 buckets between 0 to 20 kHz (the range of human hearing), with each bucket ranging 1.25 kHz (20 kHz/16). Thus, the EQ value influences the passband and stopband of the filters. To implement FIR, we have generated and tested the integer coefficients for the desired filters in Matlab and exported them as a .txt file. The filters will have 128 taps, a number derived from preliminary testing to find the minimum number of taps needed to create the desired filters. The .txt file of coefficients is read into the FPGA using an FSM and similar logic as sbox_sync in lab 7. 
+
+## Communicating EQ Values to FPGA
+The EQ values are determined by potentiometer voltage dividers being routed into the MCU. The MCU ADC converts these analog values into 8-bit values between 0 to 256, which will ultimately be used to determine the passband frequencies for the low and high pass filters. 
+
+After the MCU interprets these voltages into 8-bit values, it passes these values using SPI to the FPGA. Below is an example of a working SPI interaction. When the potentiometer is set to approximately 79.
+
+![EQ Values Printed Out Debug Terminal](images/EQValues.png) 
+
+![Logic Analyzer SPI](images/DS1Z_QuickPrint16.png) 
+
+## Generating Coefficients
+We opted to pass in FIR coefficients generated in MatLab so that we could utilize the DSP toolbox and easily visualize and adjust the filter and taps. 
+
+In order to use these coefficients in the FPGA, we wanted to convert the values from floating point to integer, which requires scaling the coefficients by a value of g. The floating point and integer coefficients are shown below, where if we scale the signal we see that the shape of the plots are the same. Thus, when plotting the output signal, it is critical to scale the signal by dividing by g. 
+
+The below figures are for a lowpass filter with 128 taps and a pass band ending at 1250 hZ.
+
+![Integer coefficients are scaled up from floating point coefficients](images/coeffConv.png) 
+
+![Floating point and integer coefficients share the same shape](images/coeffConvZoomed.png) 
+
+![FIR Filter as defined by coefficients](images/FIRFilter.png) 
+
+We then confirmed the design of these filters by creating a signal with multiple frequency components and applying our filter and gain scaling. To do this, we copied out verilog logic, allowing us to confirm that our logic acted as expected.
+
+![Original signal with multiple frequency components](images/origSignal.png) 
+
+![Output and original signal](images/outputSig.png) 
+
+## Passing in the Coefficients
+In order to retrieve the proper coefficients, the filter number was inputted based on a digital input from the MCU. Thus, based on what the user selects, the code will then retrieve the set of 128 coefficients that correspond to the filter value that they requested. This was done by saving a .txt file with all 2048 coefficients (128 coefficients per filter, 16 different filter options), and then storing the desired coefficients synchronously in BRAM. An FSM is used to retrieve all 128 coefficients on each clock cycle that will then be used to digitally filter the signal. 
+
+## Modeling DSP
+The modules created in ModelSim contained code from Lab 7 to retrieve the different taps read from a .txt file stored in memory based on desired filter values received from the MCU via SPI. The FPGA would also create a signal window that would contain the past 10 samples of digital audio from the ADC to be used for FIR filtering. This signal window and the retrieved taps would then be inputted to the MAC to be multiplied and summed up together. The MAC was configured to take in 2 signed 16-bit inputs, and then output a 33-bit result for 10 tap coefficients. It also received the system clock as input generated from the high speed oscillator at 12 MHz. The output data from the MAC was then scaled back down by being divided by the filter’s gains, and then concatenated to 8 bits so that it could be sent out to the MCU via SPI. 
+
+MAC block used within digital filtering.
+
+Simulated testbench of digital filtering implementation.
+

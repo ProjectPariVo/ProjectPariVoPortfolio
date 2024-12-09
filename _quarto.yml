@@ -9,17 +9,22 @@ website:
         text: Home
       - text: Project Status
         menu:
-        - text: ProjectParivo Project Updates
-        - text: Project Overview
+        - text: Project Parivo Project
+
+        - text: System Overview & Documentation 
           href: currentStatus/systemOverview.qmd
-        - text: Reading in Stereo Audio
-          href: currentStatus/inputAudio.qmd
-        - text: Digital Filtering
-          href: currentStatus/digitalFiltering.qmd
+
+        - text: FPGA Design
+          href: currentStatus/fpgaDesign.qmd
+
+        - text: MCU Design
+          href: currentStatus/mcuDesign.qmd
+
         - text: FPGA and MCU Communication
           href: currentStatus/fpgaToMcu.qmd
-        - text: Outputting Audio
-          href: currentStatus/dmaToDac.qmd
+
+        - text: Results & Analysis of System
+          href: currentStatus/resultsAndAnalysis.qmd
           
 format:
   html:
