@@ -33,7 +33,6 @@ The project is split between the MCU and FPGA. The MCU is in charge of (1) outpu
 
 The system is described in the block diagram and wiring diagram below. 
 
-![Block Diagram for Project PariVo](images/fpgablockdiagram.png) 
 
 ![FPGA Diagram for Project PariVo](images/actualfpga.png) 
 

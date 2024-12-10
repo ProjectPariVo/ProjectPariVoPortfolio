@@ -20,7 +20,7 @@ When we opted to use the onboard MCU DAC and SPI, we were hesitant of bringing d
 
 
 ## Filter Cutoff Values
-The microcontroller also takes in an analog signal from the potentiometer and then converts that value into digital signals using the on-board ADC. The clock speed at which is running at a clock speed of 12 MHz. The MCU then sends the signal to the FPGA using SPI communication.
+The microcontroller also takes in an analog signal from the potentiometer and then converts that value into digital signals using the on-board ADC. The clock is running at a speed of 12 MHz. The MCU then sends the signal to the FPGA using SPI communication.
 
 ## SPI Controller
 The MCU generated the SPI clock and took charge of sending and recieving the potentiometer and audio data packets by using a load and done flag. Where the load flag would be triggered after the MCU has sent the potentionmeter values and the Done flag would be triggered after the FPGA has finished processing an audio packet.
