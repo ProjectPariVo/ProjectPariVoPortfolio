@@ -107,7 +107,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../currentStatus/fpgaDesign.html">
- <span class="dropdown-text">FPGA Design</span></a>
+ <span class="dropdown-text">FPGA &amp; PCM1808 Design</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../currentStatus/mcuDesign.html">
@@ -140,7 +140,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#spi-protocol" id="toc-spi-protocol" class="nav-link active" data-scroll-target="#spi-protocol">SPI Protocol</a></li>
-  <li><a href="#i2s-protocol-to-pass-audio" id="toc-i2s-protocol-to-pass-audio" class="nav-link" data-scroll-target="#i2s-protocol-to-pass-audio">I2S Protocol to Pass AUdio</a></li>
+  <li><a href="#passing-audio" id="toc-passing-audio" class="nav-link" data-scroll-target="#passing-audio">Passing Audio</a></li>
   </ul>
 </nav>
     </div>
@@ -183,12 +183,15 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>We ended up using mono audio, only sending out the left channel of the stereo data to the MCU for output due to problems with outputting audio. We originally had planned to configure the MCU Serial Audio Interface (SAI) peripheral to I2S. This would allow us to use standard audio interfacing, sending the left and right channel at the same time. While we got close to transmitting, the lack of examples and unclear documentation caused us to pivot to using an external DAC to output audio from the FPGA. We opted to use a UDA1334A I2S DAC. To test this DAC, we used the FPGA to generate clock signals, and hooked it up directly to the ADC for testing. Despite configuring how it requested in the <a href="https://cdn-shop.adafruit.com/product-files/3678/UDA1334ATS.pdf">datasheet</a>, we could not get any signals coming out of the DAC. Finally, we opted to resort to SPI between the FPGA and MCU, allowing us to leverage the prexisting SPI transaction for the potentiometer values.</p>
 <section id="spi-protocol" class="level2">
 <h2 class="anchored" data-anchor-id="spi-protocol">SPI Protocol</h2>
-<p>The microcontroller takes in an analog signal from the potentiometer, then converts that value into digital signals using the on-board ADC. The clock speed at which is running at a clock speed of 4 MHz. The MCU then sends the signal to the FPGA using SPI communication.</p>
+<p>The MCU and FPGA pass data using SPI protocol, where it passes potentiometer values from the MCU to the FPGA and audio data from the FPGA to the MCU in 8-bit packages.</p>
+<p>The clock speed is 12 MHz. In SPI, we are sending 8 bit packages.</p>
 </section>
-<section id="i2s-protocol-to-pass-audio" class="level2">
-<h2 class="anchored" data-anchor-id="i2s-protocol-to-pass-audio">I2S Protocol to Pass AUdio</h2>
+<section id="passing-audio" class="level2">
+<h2 class="anchored" data-anchor-id="passing-audio">Passing Audio</h2>
+<p>To output the audio, we opted to use SPI between the</p>
 
 
 </section>

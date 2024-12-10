@@ -74,21 +74,21 @@
     "href": "currentStatus/fpgaToMcu.html",
     "title": "FPGA to MCU",
     "section": "",
-    "text": "The microcontroller takes in an analog signal from the potentiometer, then converts that value into digital signals using the on-board ADC. The clock speed at which is running at a clock speed of 4 MHz. The MCU then sends the signal to the FPGA using SPI communication."
+    "text": "We ended up using mono audio, only sending out the left channel of the stereo data to the MCU for output due to problems with outputting audio. We originally had planned to configure the MCU Serial Audio Interface (SAI) peripheral to I2S. This would allow us to use standard audio interfacing, sending the left and right channel at the same time. While we got close to transmitting, the lack of examples and unclear documentation caused us to pivot to using an external DAC to output audio from the FPGA. We opted to use a UDA1334A I2S DAC. To test this DAC, we used the FPGA to generate clock signals, and hooked it up directly to the ADC for testing. Despite configuring how it requested in the datasheet, we could not get any signals coming out of the DAC. Finally, we opted to resort to SPI between the FPGA and MCU, allowing us to leverage the prexisting SPI transaction for the potentiometer values."
   },
   {
     "objectID": "currentStatus/fpgaToMcu.html#spi-protocol",
     "href": "currentStatus/fpgaToMcu.html#spi-protocol",
     "title": "FPGA to MCU",
-    "section": "",
-    "text": "The microcontroller takes in an analog signal from the potentiometer, then converts that value into digital signals using the on-board ADC. The clock speed at which is running at a clock speed of 4 MHz. The MCU then sends the signal to the FPGA using SPI communication."
+    "section": "SPI Protocol",
+    "text": "SPI Protocol\nThe MCU and FPGA pass data using SPI protocol, where it passes potentiometer values from the MCU to the FPGA and audio data from the FPGA to the MCU in 8-bit packages.\nThe clock speed is 12 MHz. In SPI, we are sending 8 bit packages."
   },
   {
-    "objectID": "currentStatus/fpgaToMcu.html#i2s-protocol-to-pass-audio",
-    "href": "currentStatus/fpgaToMcu.html#i2s-protocol-to-pass-audio",
+    "objectID": "currentStatus/fpgaToMcu.html#passing-audio",
+    "href": "currentStatus/fpgaToMcu.html#passing-audio",
     "title": "FPGA to MCU",
-    "section": "I2S Protocol to Pass AUdio",
-    "text": "I2S Protocol to Pass AUdio"
+    "section": "Passing Audio",
+    "text": "Passing Audio\nTo output the audio, we opted to use SPI between the"
   },
   {
     "objectID": "about.html",
@@ -200,7 +200,7 @@
     "href": "currentStatus/systemOverview.html#bill-of-materials",
     "title": "System Overview & Documentation",
     "section": "Bill of Materials",
-    "text": "Bill of Materials\n\n\n\nItem\n\n\nPart Number\n\n\nQuantity\n\n\nCost per\n\n\n\n\nPWM1808 ADC Breakout Board\n\n\nPCM1808\n\n\n1\n\n\n7.99\n\n\n\n\n10k Slide Potentiometer\n\n\nPTA2043-2015CPB103-ND\n\n\n2\n\n\n$1.78\n\n\n\n\nBreadboard-Friendly Stereo Headphone Jack\n\n\nProduct ID: 1699\n\n\n3\n\n\n$0.95\n\n\n\n\nAux Cable\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a"
+    "text": "Bill of Materials\nAs our project deals with audio, in addition to the STM32L432KC MCU and UPduino v3.1 with the iCE40 UP5K, we used the following materials. Our new hardware was the PCM1808, an external ADC to convert stereo audio to digital to be read into the FPGA using I2S. More information on the PCM1808 can be found under FPGA & PCM1808 Design.\n\n\n\nItem\n\n\nPart Number\n\n\nQuantity\n\n\nCost per\n\n\n\n\nPCM1808 ADC Breakout Board\n\n\nPCM1808\n\n\n1\n\n\n7.99\n\n\n\n\n10k Slide Potentiometer\n\n\nPTA2043-2015CPB103-ND\n\n\n2\n\n\n$1.78\n\n\n\n\nBreadboard-Friendly Stereo Headphone Jack\n\n\nProduct ID: 1699\n\n\n3\n\n\n$0.95\n\n\n\n\nAux Cable\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a\n\n\n\n\n8ohm 4W Speakers\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a"
   },
   {
     "objectID": "currentStatus/inputAudio.html",

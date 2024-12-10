@@ -107,7 +107,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
         <li>
     <a class="dropdown-item" href="../currentStatus/fpgaDesign.html">
- <span class="dropdown-text">FPGA Design</span></a>
+ <span class="dropdown-text">FPGA &amp; PCM1808 Design</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../currentStatus/mcuDesign.html">
@@ -235,6 +235,7 @@ Output the manipulated audio onto speakers
 </section>
 <section id="bill-of-materials" class="level2">
 <h2 class="anchored" data-anchor-id="bill-of-materials">Bill of Materials</h2>
+<p>As our project deals with audio, in addition to the STM32L432KC MCU and UPduino v3.1 with the iCE40 UP5K, we used the following materials. Our new hardware was the PCM1808, an external ADC to convert stereo audio to digital to be read into the FPGA using I2S. More information on the PCM1808 can be found under FPGA &amp; PCM1808 Design.</p>
 <table>
 <tbody><tr>
 <th>
@@ -252,7 +253,7 @@ Cost per
 </tr>
 <tr>
 <td>
-<a href="https://www.ti.com/lit/ds/symlink/pcm1808.pdf?HQS=dis-dk-null-digikeymode-dsf-pf-null-wwe&amp;ts=1733738047778&amp;ref_url=https%253A%252F%252Fwww.ti.com%252Fgeneral%252Fdocs%252Fsuppproductinfo.tsp%253FdistId%253D10%2526gotoUrl%253Dhttps%253A%252F%252Fwww.ti.com%252Flit%252Fgpn%252Fpcm1808">PWM1808 ADC Breakout Board</a>
+<a href="https://www.ti.com/lit/ds/symlink/pcm1808.pdf?HQS=dis-dk-null-digikeymode-dsf-pf-null-wwe&amp;ts=1733738047778&amp;ref_url=https%253A%252F%252Fwww.ti.com%252Fgeneral%252Fdocs%252Fsuppproductinfo.tsp%253FdistId%253D10%2526gotoUrl%253Dhttps%253A%252F%252Fwww.ti.com%252Flit%252Fgpn%252Fpcm1808">PCM1808 ADC Breakout Board</a>
 </td>
 <td>
 <a href="https://www.amazon.com/dp/B07X3QLWR8?ref=ppx_yo2ov_dt_b_fed_asin_title">PCM1808</a>
@@ -295,6 +296,20 @@ $0.95
 <tr>
 <td>
 Aux Cable
+</td>
+<td>
+Sourced from stockroom
+</td>
+<td>
+3
+</td>
+<td>
+n/a
+</td>
+</tr>
+<tr>
+<td>
+8ohm 4W Speakers
 </td>
 <td>
 Sourced from stockroom
