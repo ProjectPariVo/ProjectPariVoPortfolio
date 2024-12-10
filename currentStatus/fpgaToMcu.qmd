@@ -1,5 +1,5 @@
 ---
-title: "FPGA to MCU"s
+title: "FPGA to MCU"
 description: "Communication Protocols: SPI & I2S"
 author: "Victoria Parizot & Audrey Vo"
 date: "11/19/24"
@@ -13,8 +13,4 @@ We ended up using mono audio, only sending out the left channel of the stereo da
 ## SPI Protocol
 The MCU and FPGA pass data using SPI protocol, where it passes potentiometer values from the MCU to the FPGA and audio data from the FPGA to the MCU in 8-bit packages. 
 
-The clock speed is 12 MHz. In SPI, we are sending 8 bit packages.  
-
-## Passing Audio
-To output the audio, we opted to use SPI between the 
 
