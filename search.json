@@ -25,7 +25,7 @@
     "href": "currentStatus/mcuDesign.html#filter-cutoff-values",
     "title": "MCU Design",
     "section": "Filter Cutoff Values",
-    "text": "Filter Cutoff Values\nThe microcontroller also takes in an analog signal from the potentiometer and then converts that value into digital signals using the on-board ADC. The clock speed at which is running at a clock speed of 12 MHz. The MCU then sends the signal to the FPGA using SPI communication."
+    "text": "Filter Cutoff Values\nThe microcontroller also takes in an analog signal from the potentiometer and then converts that value into digital signals using the on-board ADC. The clock is running at a speed of 12 MHz. The MCU then sends the signal to the FPGA using SPI communication."
   },
   {
     "objectID": "currentStatus/mcuDesign.html#spi-controller",
@@ -33,6 +33,167 @@
     "title": "MCU Design",
     "section": "SPI Controller",
     "text": "SPI Controller\nThe MCU generated the SPI clock and took charge of sending and recieving the potentiometer and audio data packets by using a load and done flag. Where the load flag would be triggered after the MCU has sent the potentionmeter values and the Done flag would be triggered after the FPGA has finished processing an audio packet."
+  },
+  {
+    "objectID": "currentStatus/hardwareDesign.html",
+    "href": "currentStatus/hardwareDesign.html",
+    "title": "Hardware Design",
+    "section": "",
+    "text": "Because digital filtering was not implemented on the FPGA, an analog circuit was used instead to control the filtering of the outputted digital audio and the gains of the audio. An RC circuit (low pass filter) was put in series with a CR circuit (high pass filter) to create an overall bandpass filter. The resistors of the RC and CR are 10k potentiometers, while the C value is 1 uF to allow for a cutoff frequency between 15 Hz and 32000 Hz. This is a reasonable range since human hearing goes up to 22000 Hz.\n\\[ Cutoff Frequency for RC/CR filter = \\frac{1}{2\\pi rc} \\]\n\\[ Potentiometer Range = 5 Hz - 10 kHz \\]\n\\[ f_c = \\frac{1}{2\\pi rc} = \\frac{1}{2\\pi (10000)(1uF)} = 15.92 Hz \\]\n\\[ f_c = \\frac{1}{2\\pi rc} = \\frac{1}{2\\pi (5)(1uF)} = 31,831 Hz \\]\n\n\n\nCalculations to Determine the Needed Capacitance of Circuit.\n\n\nThe output of this bandpass filter was then inputted to another set of sliding 10k potentiometers to control the gain/volume of the audio. An LM386N audio amplifier was then used to connect the output of the gain potentiometers with an 8K speaker because the MCU pins did not generate enough current to drive the speaker."
+  },
+  {
+    "objectID": "currentStatus/hardwareDesign.html#hardware-design",
+    "href": "currentStatus/hardwareDesign.html#hardware-design",
+    "title": "Hardware Design",
+    "section": "",
+    "text": "Because digital filtering was not implemented on the FPGA, an analog circuit was used instead to control the filtering of the outputted digital audio and the gains of the audio. An RC circuit (low pass filter) was put in series with a CR circuit (high pass filter) to create an overall bandpass filter. The resistors of the RC and CR are 10k potentiometers, while the C value is 1 uF to allow for a cutoff frequency between 15 Hz and 32000 Hz. This is a reasonable range since human hearing goes up to 22000 Hz.\n\\[ Cutoff Frequency for RC/CR filter = \\frac{1}{2\\pi rc} \\]\n\\[ Potentiometer Range = 5 Hz - 10 kHz \\]\n\\[ f_c = \\frac{1}{2\\pi rc} = \\frac{1}{2\\pi (10000)(1uF)} = 15.92 Hz \\]\n\\[ f_c = \\frac{1}{2\\pi rc} = \\frac{1}{2\\pi (5)(1uF)} = 31,831 Hz \\]\n\n\n\nCalculations to Determine the Needed Capacitance of Circuit.\n\n\nThe output of this bandpass filter was then inputted to another set of sliding 10k potentiometers to control the gain/volume of the audio. An LM386N audio amplifier was then used to connect the output of the gain potentiometers with an 8K speaker because the MCU pins did not generate enough current to drive the speaker."
+  },
+  {
+    "objectID": "currentStatus/systemOverview.html",
+    "href": "currentStatus/systemOverview.html",
+    "title": "System Overview & Documentation",
+    "section": "",
+    "text": "Harvey Mudd College includes a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a functional deck so that we could perform for our friends.\nInsight into how we came up with this project can be found in Victoria’s blog."
+  },
+  {
+    "objectID": "currentStatus/systemOverview.html#motivation",
+    "href": "currentStatus/systemOverview.html#motivation",
+    "title": "System Overview & Documentation",
+    "section": "",
+    "text": "Harvey Mudd College includes a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a functional deck so that we could perform for our friends.\nInsight into how we came up with this project can be found in Victoria’s blog."
+  },
+  {
+    "objectID": "currentStatus/systemOverview.html#problem-statement",
+    "href": "currentStatus/systemOverview.html#problem-statement",
+    "title": "System Overview & Documentation",
+    "section": "Problem Statement",
+    "text": "Problem Statement\nOur overarching goal for this project is to build an operational DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of two input audio files based on physical inputs from the user."
+  },
+  {
+    "objectID": "currentStatus/systemOverview.html#objectives",
+    "href": "currentStatus/systemOverview.html#objectives",
+    "title": "System Overview & Documentation",
+    "section": "Objectives",
+    "text": "Objectives\nThe objectives of this project is below.\n\n\nUse an external ADC to read in a Stereo file into the FPGA\n\n\nCommunicate audio data between the MCU and FPGA\n\n\nImplement low pass and high pass digital filters using the FPGA\n\n\nVary audio volume based on user gain inputs\n\n\nOutput the manipulated audio onto speakers"
+  },
+  {
+    "objectID": "currentStatus/systemOverview.html#system-overview",
+    "href": "currentStatus/systemOverview.html#system-overview",
+    "title": "System Overview & Documentation",
+    "section": "System Overview",
+    "text": "System Overview\nThe project is split between the MCU and FPGA. The MCU is in charge of (1) outputing the manipulated audio data with the onboard DAC with DMA, (2) interpreting and transferring the user input EQ values to the FPGA, and (3) acting as the controller for SPI communication. The FPGA acts as (1) the controller to PCM1808 ADC to read in audio and (2) implements digital filters to the data based on EQ values from the MCU. To communicate between the MCU and FPGA we use SPI for both the EQ values and audio data.\nThe system is described in the block diagram and wiring diagram below.\n\n\n\nFPGA Diagram for Project PariVo\n\n\n\n\n\nWiring Schematic for Project PariVo"
+  },
+  {
+    "objectID": "currentStatus/systemOverview.html#bill-of-materials",
+    "href": "currentStatus/systemOverview.html#bill-of-materials",
+    "title": "System Overview & Documentation",
+    "section": "Bill of Materials",
+    "text": "Bill of Materials\nAs our project deals with audio, in addition to the STM32L432KC MCU and UPduino v3.1 with the iCE40 UP5K, we used the following materials. Our new hardware was the PCM1808, an external ADC to convert stereo audio to digital to be read into the FPGA using I2S. More information on the PCM1808 can be found under FPGA & PCM1808 Design.\n\n\n\nItem\n\n\nPart Number\n\n\nQuantity\n\n\nCost per\n\n\n\n\nPCM1808 ADC Breakout Board\n\n\nPCM1808\n\n\n1\n\n\n7.99\n\n\n\n\n10k Slide Potentiometer\n\n\nPTA2043-2015CPB103-ND\n\n\n2\n\n\n$1.78\n\n\n\n\nBreadboard-Friendly Stereo Headphone Jack\n\n\nProduct ID: 1699\n\n\n3\n\n\n$0.95\n\n\n\n\nAux Cable\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a\n\n\n\n\n8Ohm 4W Speakers\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a"
+  },
+  {
+    "objectID": "currentStatus/digitalFiltering.html",
+    "href": "currentStatus/digitalFiltering.html",
+    "title": "Digital Filtering",
+    "section": "",
+    "text": "To apply digital filtering of the output audio signal, we utilize the MCU’s onboard ADC, use SPI to communicate EQ values between the MCU and FPGA, and generate the necessary FIR Coefficients."
+  },
+  {
+    "objectID": "currentStatus/digitalFiltering.html#digital-filtering",
+    "href": "currentStatus/digitalFiltering.html#digital-filtering",
+    "title": "Digital Filtering",
+    "section": "Digital Filtering",
+    "text": "Digital Filtering\nWe have set up the onboard MCU ADC to read in the four external potentiometer values and used SPI to transfer these EQ values to the FPGA to be used for digital filtering. We have opted for Finite Impulse Response (FIR) to apply low and high pass filters to the audio data that we will read in from the PCM1808 DAC. The EQ values correspond to 16 buckets between 0 to 20 kHz (the range of human hearing), with each bucket ranging 1.25 kHz (20 kHz/16). Thus, the EQ value influences the passband and stopband of the filters. To implement FIR, we have generated and tested the integer coefficients for the desired filters in Matlab and exported them as a .txt file. The filters will have 128 taps, a number derived from preliminary testing to find the minimum number of taps needed to create the desired filters. The .txt file of coefficients is read into the FPGA using an FSM and similar logic as sbox_sync in lab 7."
+  },
+  {
+    "objectID": "currentStatus/digitalFiltering.html#communicating-eq-values-to-fpga",
+    "href": "currentStatus/digitalFiltering.html#communicating-eq-values-to-fpga",
+    "title": "Digital Filtering",
+    "section": "Communicating EQ Values to FPGA",
+    "text": "Communicating EQ Values to FPGA\nThe EQ values are determined by potentiometer voltage dividers being routed into the MCU. The MCU ADC converts these analog values into 8-bit values between 0 to 256, which will ultimately be used to determine the passband frequencies for the low and high pass filters.\nAfter the MCU interprets these voltages into 8-bit values, it passes these values using SPI to the FPGA. Below is an example of a working SPI interaction. When the potentiometer is set to approximately 79.\n\n\n\nEQ Values Printed Out Debug Terminal\n\n\n\n\n\nLogic Analyzer SPI"
+  },
+  {
+    "objectID": "currentStatus/digitalFiltering.html#generating-coefficients",
+    "href": "currentStatus/digitalFiltering.html#generating-coefficients",
+    "title": "Digital Filtering",
+    "section": "Generating Coefficients",
+    "text": "Generating Coefficients\nWe opted to pass in FIR coefficients generated in MatLab so that we could utilize the DSP toolbox and easily visualize and adjust the filter and taps.\nIn order to use these coefficients in the FPGA, we wanted to convert the values from floating point to integer, which requires scaling the coefficients by a value of g. The floating point and integer coefficients are shown below, where if we scale the signal we see that the shape of the plots are the same. Thus, when plotting the output signal, it is critical to scale the signal by dividing by g.\nThe below figures are for a lowpass filter with 128 taps and a pass band ending at 1250 hZ.\n\n\n\nInteger coefficients are scaled up from floating point coefficients\n\n\n\n\n\nFloating point and integer coefficients share the same shape\n\n\n\n\n\nFIR Filter as defined by coefficients\n\n\nWe then confirmed the design of these filters by creating a signal with multiple frequency components and applying our filter and gain scaling. To do this, we copied out verilog logic, allowing us to confirm that our logic acted as expected.\n\n\n\nOriginal signal with multiple frequency components\n\n\n\n\n\nOutput and original signal"
+  },
+  {
+    "objectID": "currentStatus/digitalFiltering.html#passing-in-the-coefficients",
+    "href": "currentStatus/digitalFiltering.html#passing-in-the-coefficients",
+    "title": "Digital Filtering",
+    "section": "Passing in the Coefficients",
+    "text": "Passing in the Coefficients\nIn order to retrieve the proper coefficients, the filter number was inputted based on a digital input from the MCU. Thus, based on what the user selects, the code will then retrieve the set of 128 coefficients that correspond to the filter value that they requested. This was done by saving a .txt file with all 2048 coefficients (128 coefficients per filter, 16 different filter options), and then storing the desired coefficients synchronously in BRAM. An FSM is used to retrieve all 128 coefficients on each clock cycle that will then be used to digitally filter the signal."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Project Parivo",
+    "section": "",
+    "text": "Harvey Mudd College supplies a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a low-cost, functional deck so that we could perform for our friends. Therefore, this project seeks to build an operational two-channel DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of audio input through an AUX cord based on physical inputs from the user. The FPGA will apply Finite Impule Response (FIR) digital filtering to the audio, based on user choosen EQ values passed in through the MCU. The audio is then passed into the MCU, where the onboard MCU DAC with Direct Memory Access (DMA) will output the manipulated audio to speakers.\nA demo of our final project is here:"
+  },
+  {
+    "objectID": "index.html#abstract",
+    "href": "index.html#abstract",
+    "title": "Project Parivo",
+    "section": "",
+    "text": "Harvey Mudd College supplies a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a low-cost, functional deck so that we could perform for our friends. Therefore, this project seeks to build an operational two-channel DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of audio input through an AUX cord based on physical inputs from the user. The FPGA will apply Finite Impule Response (FIR) digital filtering to the audio, based on user choosen EQ values passed in through the MCU. The audio is then passed into the MCU, where the onboard MCU DAC with Direct Memory Access (DMA) will output the manipulated audio to speakers.\nA demo of our final project is here:"
+  },
+  {
+    "objectID": "index.html#about-us",
+    "href": "index.html#about-us",
+    "title": "Project Parivo",
+    "section": "About Us",
+    "text": "About Us\nAudrey and Victoria are seniors at Harvey Mudd College, majoring in engineering, and passionate about music. For their E155 (AKA MicroPs) Final Project, they are working together to create a two-channel DJ mixer. Ultimately, they hope to DJ together with their mixer.\n\nVictoria Parizot - Norwalk, CT\nVictoria Parizot is most interested with mechanical and electrical design, and excited to be taking MicroPs this semester! At Harvey Mudd, she is a West Dorm President, a Machine Shop Proctor, and a Member of the Tau Beta Pi Honors Society. In her free time, she enjoys woodworking, taking and developing film photos, and sailing.\nTake a look at her portfolio to learn more!\n\n\nAudrey Vo - Valley Girl, CA\nAudrey is an APISPAM Head Sponsor, Atwood Dorm President, and Machine Shop Proctor at Harvey Mudd. The past few summers, she has been able to participate in summer research with Prof. Dodds in “Summer Start-Up” and with Prof. Gokli as part of the Riggs Fellowship. She was previously HMC 2025 Class President and also a member of the Prisoner Education Project.\nAudrey is currently a resident of Southern California, and have lived here her entire life. (If you have any recommendations of things to do in CA, please let her know!). In her free time, she love to play pickleball, try new foods, and spend time with friends.\nIf you are interested in learning more about Audrey, please feel free to connect on LinkedIn or explore her portfolio!"
+  },
+  {
+    "objectID": "index.html#acknowledgements",
+    "href": "index.html#acknowledgements",
+    "title": "Project Parivo",
+    "section": "Acknowledgements",
+    "text": "Acknowledgements\nWe would like to thank Professor Brake for his help and guidance throughout the project, especially with his help debugging. We would also like to thank the the E155 Grutors, especially Kavi, for going above and beyond with helping us think about and implement our project and labs. Finally, we would like to thank our classmates, who were always willing to lend a second perspective, even during late nights in the lab."
+  },
+  {
+    "objectID": "index.html#previous-projects",
+    "href": "index.html#previous-projects",
+    "title": "Project Parivo",
+    "section": "Previous Projects",
+    "text": "Previous Projects\nWe took inspiration from the following projects:\n\nhttps://briansimpkins.github.io/E155_Final/"
+  },
+  {
+    "objectID": "index.html#dma-dac-documentation",
+    "href": "index.html#dma-dac-documentation",
+    "title": "Project Parivo",
+    "section": "DMA & DAC Documentation",
+    "text": "DMA & DAC Documentation\nhttps://youtu.be/X9T0ZND_eZc?si=qwe-sAcXkT96tGlL https://m0agx.eu/generating-signals-with-stm32l4-timer-dma-and-dac.html https://wiki.st.com/stm32mcu/wiki/Getting_started_with_DAC#Configuring_DAC https://www.st.com/content/ccc/resource/technical/document/application_note/05/fb/41/91/39/02/4d/1e/CD00259245.pdf/files/CD00259245.pdf/jcr:content/translations/en.CD00259245.pdf https://www.st.com/resource/en/application_note/an4566-extending-the-dac-performance-of-stm32-microcontrollers-stmicroelectronics.pdf"
+  },
+  {
+    "objectID": "index.html#datasheets",
+    "href": "index.html#datasheets",
+    "title": "Project Parivo",
+    "section": "Datasheets",
+    "text": "Datasheets\nPCM1808 Datasheet\nSTM32L432KC Reference manual\nSTM32L432KC Datasheet\niCE40 UltraPlus Family Data Sheet"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "currentStatus/fpgaToMcu.html",
+    "href": "currentStatus/fpgaToMcu.html",
+    "title": "FPGA to MCU",
+    "section": "",
+    "text": "We ended up using mono audio, only sending out the left channel of the stereo data to the MCU for output due to problems with outputting audio. We originally had planned to configure the MCU Serial Audio Interface (SAI) peripheral to I2S. This would allow us to use standard audio interfacing, sending the left and right channel at the same time. While we got close to transmitting, the lack of examples and unclear documentation caused us to pivot to using an external DAC to output audio from the FPGA. We opted to use a UDA1334A I2S DAC. To test this DAC, we used the FPGA to generate clock signals, and hooked it up directly to the ADC for testing. Despite configuring how it requested in the datasheet, we could not get any signals coming out of the DAC. Finally, we opted to resort to SPI between the FPGA and MCU, allowing us to leverage the prexisting SPI transaction for the potentiometer values."
+  },
+  {
+    "objectID": "currentStatus/fpgaToMcu.html#spi-protocol",
+    "href": "currentStatus/fpgaToMcu.html#spi-protocol",
+    "title": "FPGA to MCU",
+    "section": "SPI Protocol",
+    "text": "SPI Protocol\nThe MCU and FPGA pass data using SPI protocol, where it passes potentiometer values from the MCU to the FPGA and audio data from the FPGA to the MCU in 8-bit packages."
   },
   {
     "objectID": "currentStatus/fpgaDesign.html",
@@ -75,139 +236,6 @@
     "title": "FPGA Design",
     "section": "Modeling DSP",
     "text": "Modeling DSP\nThe modules created in ModelSim contained code from Lab 7 to retrieve the different taps read from a .txt file stored in memory based on desired filter values received from the MCU via SPI. The FPGA would also create a signal window that would contain the past 10 samples of digital audio from the ADC to be used for FIR filtering. This signal window and the retrieved taps would then be inputted to the MAC to be multiplied and summed up together. The MAC was configured to take in 2 signed 16-bit inputs, and then output a 33-bit result for 10 tap coefficients. It also received the system clock as input generated from the high speed oscillator at 12 MHz. The output data from the MAC was then scaled back down by being divided by the filter’s gains, and then concatenated to 8 bits so that it could be sent out to the MCU via SPI.\nMAC block used within digital filtering.\nSimulated testbench of digital filtering implementation."
-  },
-  {
-    "objectID": "currentStatus/fpgaToMcu.html",
-    "href": "currentStatus/fpgaToMcu.html",
-    "title": "FPGA to MCU",
-    "section": "",
-    "text": "We ended up using mono audio, only sending out the left channel of the stereo data to the MCU for output due to problems with outputting audio. We originally had planned to configure the MCU Serial Audio Interface (SAI) peripheral to I2S. This would allow us to use standard audio interfacing, sending the left and right channel at the same time. While we got close to transmitting, the lack of examples and unclear documentation caused us to pivot to using an external DAC to output audio from the FPGA. We opted to use a UDA1334A I2S DAC. To test this DAC, we used the FPGA to generate clock signals, and hooked it up directly to the ADC for testing. Despite configuring how it requested in the datasheet, we could not get any signals coming out of the DAC. Finally, we opted to resort to SPI between the FPGA and MCU, allowing us to leverage the prexisting SPI transaction for the potentiometer values."
-  },
-  {
-    "objectID": "currentStatus/fpgaToMcu.html#spi-protocol",
-    "href": "currentStatus/fpgaToMcu.html#spi-protocol",
-    "title": "FPGA to MCU",
-    "section": "SPI Protocol",
-    "text": "SPI Protocol\nThe MCU and FPGA pass data using SPI protocol, where it passes potentiometer values from the MCU to the FPGA and audio data from the FPGA to the MCU in 8-bit packages."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ProjectParivo",
-    "section": "",
-    "text": "Harvey Mudd College supplies a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a low-cost, functional deck so that we could perform for our friends. Therefore, this project seeks to build an operational two-channel DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of audio input through an AUX cord based on physical inputs from the user. The FPGA will apply Finite Impule Response (FIR) digital filtering to the audio, based on user choosen EQ values passed in through the MCU. The audio is then passed into the MCU, where the onboard MCU DAC with Direct Memory Access (DMA) will output the manipulated audio to speakers.\nA demo of our final project is here:"
-  },
-  {
-    "objectID": "index.html#abstract",
-    "href": "index.html#abstract",
-    "title": "ProjectParivo",
-    "section": "",
-    "text": "Harvey Mudd College supplies a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a low-cost, functional deck so that we could perform for our friends. Therefore, this project seeks to build an operational two-channel DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of audio input through an AUX cord based on physical inputs from the user. The FPGA will apply Finite Impule Response (FIR) digital filtering to the audio, based on user choosen EQ values passed in through the MCU. The audio is then passed into the MCU, where the onboard MCU DAC with Direct Memory Access (DMA) will output the manipulated audio to speakers.\nA demo of our final project is here:"
-  },
-  {
-    "objectID": "index.html#about-us",
-    "href": "index.html#about-us",
-    "title": "ProjectParivo",
-    "section": "About Us",
-    "text": "About Us\nAudrey and Victoria are seniors at Harvey Mudd College, majoring in engineering, and passionate about music. For their E155 (AKA MicroPs) Final Project, they are working together to create a two-channel DJ mixer. Ultimately, they hope to DJ together with their mixer.\n\nVictoria Parizot - Norwalk, CT\nVictoria Parizot is most interested with mechanical and electrical design, and excited to be taking MicroPs this semester! At Harvey Mudd, she is a West Dorm President, a Machine Shop Proctor, and a Member of the Tau Beta Pi Honors Society. In her free time, she enjoys woodworking, taking and developing film photos, and sailing.\nTake a look at her portfolio to learn more!\n\n\nAudrey Vo - Valley Girl, CA\nAudrey is an APISPAM Head Sponsor, Atwood Dorm President, and Machine Shop Proctor at Harvey Mudd. The past few summers, she has been able to participate in summer research with Prof. Dodds in “Summer Start-Up” and with Prof. Gokli as part of the Riggs Fellowship. She was previously HMC 2025 Class President and also a member of the Prisoner Education Project.\nAudrey is currently a resident of Southern California, and have lived here her entire life. (If you have any recommendations of things to do in CA, please let her know!). In her free time, she love to play pickleball, try new foods, and spend time with friends.\nIf you are interested in learning more about Audrey, please feel free to connect on LinkedIn or explore her portfolio!"
-  },
-  {
-    "objectID": "index.html#acknowledgements",
-    "href": "index.html#acknowledgements",
-    "title": "ProjectParivo",
-    "section": "Acknowledgements",
-    "text": "Acknowledgements\nWe would like to thank Professor Brake for his help and guidance throughout the project, especially with his help debugging. We would also like to thank the the E155 Grutors, especially Kavi, for going above and beyond with helping us think about and implement our project and labs. Finally, we would like to thank our classmates, who were always willing to lend a second perspective, even during late nights in the lab."
-  },
-  {
-    "objectID": "index.html#references",
-    "href": "index.html#references",
-    "title": "ProjectParivo",
-    "section": "References",
-    "text": "References"
-  },
-  {
-    "objectID": "currentStatus/digitalFiltering.html",
-    "href": "currentStatus/digitalFiltering.html",
-    "title": "Digital Filtering",
-    "section": "",
-    "text": "To apply digital filtering of the output audio signal, we utilize the MCU’s onboard ADC, use SPI to communicate EQ values between the MCU and FPGA, and generate the necessary FIR Coefficients."
-  },
-  {
-    "objectID": "currentStatus/digitalFiltering.html#digital-filtering",
-    "href": "currentStatus/digitalFiltering.html#digital-filtering",
-    "title": "Digital Filtering",
-    "section": "Digital Filtering",
-    "text": "Digital Filtering\nWe have set up the onboard MCU ADC to read in the four external potentiometer values and used SPI to transfer these EQ values to the FPGA to be used for digital filtering. We have opted for Finite Impulse Response (FIR) to apply low and high pass filters to the audio data that we will read in from the PCM1808 DAC. The EQ values correspond to 16 buckets between 0 to 20 kHz (the range of human hearing), with each bucket ranging 1.25 kHz (20 kHz/16). Thus, the EQ value influences the passband and stopband of the filters. To implement FIR, we have generated and tested the integer coefficients for the desired filters in Matlab and exported them as a .txt file. The filters will have 128 taps, a number derived from preliminary testing to find the minimum number of taps needed to create the desired filters. The .txt file of coefficients is read into the FPGA using an FSM and similar logic as sbox_sync in lab 7."
-  },
-  {
-    "objectID": "currentStatus/digitalFiltering.html#communicating-eq-values-to-fpga",
-    "href": "currentStatus/digitalFiltering.html#communicating-eq-values-to-fpga",
-    "title": "Digital Filtering",
-    "section": "Communicating EQ Values to FPGA",
-    "text": "Communicating EQ Values to FPGA\nThe EQ values are determined by potentiometer voltage dividers being routed into the MCU. The MCU ADC converts these analog values into 8-bit values between 0 to 256, which will ultimately be used to determine the passband frequencies for the low and high pass filters.\nAfter the MCU interprets these voltages into 8-bit values, it passes these values using SPI to the FPGA. Below is an example of a working SPI interaction. When the potentiometer is set to approximately 79.\n\n\n\nEQ Values Printed Out Debug Terminal\n\n\n\n\n\nLogic Analyzer SPI"
-  },
-  {
-    "objectID": "currentStatus/digitalFiltering.html#generating-coefficients",
-    "href": "currentStatus/digitalFiltering.html#generating-coefficients",
-    "title": "Digital Filtering",
-    "section": "Generating Coefficients",
-    "text": "Generating Coefficients\nWe opted to pass in FIR coefficients generated in MatLab so that we could utilize the DSP toolbox and easily visualize and adjust the filter and taps.\nIn order to use these coefficients in the FPGA, we wanted to convert the values from floating point to integer, which requires scaling the coefficients by a value of g. The floating point and integer coefficients are shown below, where if we scale the signal we see that the shape of the plots are the same. Thus, when plotting the output signal, it is critical to scale the signal by dividing by g.\nThe below figures are for a lowpass filter with 128 taps and a pass band ending at 1250 hZ.\n\n\n\nInteger coefficients are scaled up from floating point coefficients\n\n\n\n\n\nFloating point and integer coefficients share the same shape\n\n\n\n\n\nFIR Filter as defined by coefficients\n\n\nWe then confirmed the design of these filters by creating a signal with multiple frequency components and applying our filter and gain scaling. To do this, we copied out verilog logic, allowing us to confirm that our logic acted as expected.\n\n\n\nOriginal signal with multiple frequency components\n\n\n\n\n\nOutput and original signal"
-  },
-  {
-    "objectID": "currentStatus/digitalFiltering.html#passing-in-the-coefficients",
-    "href": "currentStatus/digitalFiltering.html#passing-in-the-coefficients",
-    "title": "Digital Filtering",
-    "section": "Passing in the Coefficients",
-    "text": "Passing in the Coefficients\nIn order to retrieve the proper coefficients, the filter number was inputted based on a digital input from the MCU. Thus, based on what the user selects, the code will then retrieve the set of 128 coefficients that correspond to the filter value that they requested. This was done by saving a .txt file with all 2048 coefficients (128 coefficients per filter, 16 different filter options), and then storing the desired coefficients synchronously in BRAM. An FSM is used to retrieve all 128 coefficients on each clock cycle that will then be used to digitally filter the signal."
-  },
-  {
-    "objectID": "currentStatus/systemOverview.html",
-    "href": "currentStatus/systemOverview.html",
-    "title": "System Overview & Documentation",
-    "section": "",
-    "text": "Harvey Mudd College includes a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a functional deck so that we could perform for our friends.\nInsight into how we came up with this project can be found in Victoria’s blog."
-  },
-  {
-    "objectID": "currentStatus/systemOverview.html#motivation",
-    "href": "currentStatus/systemOverview.html#motivation",
-    "title": "System Overview & Documentation",
-    "section": "",
-    "text": "Harvey Mudd College includes a plethora of student DJs that perform regularly around the 5Cs. As two currently aspiring DJs, we wanted to understand the technical workings of audio modifications and create a functional deck so that we could perform for our friends.\nInsight into how we came up with this project can be found in Victoria’s blog."
-  },
-  {
-    "objectID": "currentStatus/systemOverview.html#problem-statement",
-    "href": "currentStatus/systemOverview.html#problem-statement",
-    "title": "System Overview & Documentation",
-    "section": "Problem Statement",
-    "text": "Problem Statement\nOur overarching goal for this project is to build an operational DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of two input audio files based on physical inputs from the user."
-  },
-  {
-    "objectID": "currentStatus/systemOverview.html#objectives",
-    "href": "currentStatus/systemOverview.html#objectives",
-    "title": "System Overview & Documentation",
-    "section": "Objectives",
-    "text": "Objectives\nThe objectives of this project is below.\n\n\nUse an external ADC to read in a Stereo file into the FPGA\n\n\nCommunicate audio data between the MCU and FPGA\n\n\nImplement low pass and high pass digital filters using the FPGA\n\n\nVary audio volume based on user gain inputs\n\n\nOutput the manipulated audio onto speakers"
-  },
-  {
-    "objectID": "currentStatus/systemOverview.html#system-overview",
-    "href": "currentStatus/systemOverview.html#system-overview",
-    "title": "System Overview & Documentation",
-    "section": "System Overview",
-    "text": "System Overview\nThe project is split between the MCU and FPGA. The MCU is in charge of (1) outputing the manipulated audio data with the onboard DAC with DMA, (2) interpreting and transferring the user input EQ values to the FPGA, and (3) acting as the controller for SPI communication. The FPGA acts as (1) the controller to PCM1808 ADC to read in audio and (2) implements digital filters to the data based on EQ values from the MCU. To communicate between the MCU and FPGA we use SPI for both the EQ values and audio data.\nThe system is described in the block diagram and wiring diagram below.\n\n\n\nBlock Diagram for Project PariVo\n\n\n\n\n\nFPGA Diagram for Project PariVo\n\n\n\n\n\nWiring Schematic for Project PariVo"
-  },
-  {
-    "objectID": "currentStatus/systemOverview.html#bill-of-materials",
-    "href": "currentStatus/systemOverview.html#bill-of-materials",
-    "title": "System Overview & Documentation",
-    "section": "Bill of Materials",
-    "text": "Bill of Materials\nAs our project deals with audio, in addition to the STM32L432KC MCU and UPduino v3.1 with the iCE40 UP5K, we used the following materials. Our new hardware was the PCM1808, an external ADC to convert stereo audio to digital to be read into the FPGA using I2S. More information on the PCM1808 can be found under FPGA & PCM1808 Design.\n\n\n\nItem\n\n\nPart Number\n\n\nQuantity\n\n\nCost per\n\n\n\n\nPCM1808 ADC Breakout Board\n\n\nPCM1808\n\n\n1\n\n\n7.99\n\n\n\n\n10k Slide Potentiometer\n\n\nPTA2043-2015CPB103-ND\n\n\n2\n\n\n$1.78\n\n\n\n\nBreadboard-Friendly Stereo Headphone Jack\n\n\nProduct ID: 1699\n\n\n3\n\n\n$0.95\n\n\n\n\nAux Cable\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a\n\n\n\n\n8Ohm 4W Speakers\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a"
   },
   {
     "objectID": "currentStatus/resultsAndAnalysis.html",
