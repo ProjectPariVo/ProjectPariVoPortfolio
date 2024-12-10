@@ -33,9 +33,11 @@ The project is split between the MCU and FPGA. The MCU is in charge of (1) outpu
 
 The system is described in the block diagram and wiring diagram below. 
 
-![Block Diagram for Project PariVo](images/BlockDiagram.jpeg) 
+![Block Diagram for Project PariVo](images/fpgablockdiagram.png) 
 
-![Wiring Schematic for Project PariVo](images/WiringDiagram.jpeg) 
+![FPGA Diagram for Project PariVo](images/actualfpga.png) 
+
+![Wiring Schematic for Project PariVo](images/kicadschematic.png) 
 
 ## Bill of Materials
 As our project deals with audio, in addition to the STM32L432KC MCU and UPduino v3.1 with the iCE40 UP5K, we used the following materials. Our new hardware was the PCM1808, an external ADC to convert stereo audio to digital to be read into the FPGA using I2S. More information on the PCM1808 can be found under FPGA & PCM1808 Design.
@@ -72,7 +74,7 @@ As our project deals with audio, in addition to the STM32L432KC MCU and UPduino 
     <td> n/a </td>
   </tr>
   <tr>
-    <td> 8ohm 4W Speakers </td>
+    <td> 8Ohm 4W Speakers </td>
     <td> Sourced from stockroom </td>
     <td>3</td>
     <td> n/a </td>

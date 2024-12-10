@@ -1,5 +1,5 @@
 ---
-title: "FPGA to MCU"
+title: "FPGA to MCU"s
 description: "Communication Protocols: SPI & I2S"
 author: "Victoria Parizot & Audrey Vo"
 date: "11/19/24"

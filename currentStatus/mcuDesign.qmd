@@ -8,7 +8,7 @@ date: "12/9/24"
 #   - Brainstorm
 draft: false
 ---
-The microcontroller held two roles in our system. First, it would output the audio, converting it from digital to analog. Second, it would pass the lowpass and highpass filter cutoff values to the FPGA. While we ultimately did not succeed in implementing digital filtering on the FPGA, the MCU fulfilled its role in sending over the filter cutoff values. 
+The microcontroller held three roles in our system. First, it would output the audio, converting it from digital to analog. Second, it would interpret and pass the lowpass and highpass filter cutoff values to the FPGA. Third, it acted as the controller for SPI communication. While we ultimately did not succeed in implementing digital filtering on the FPGA, the MCU fulfilled its role in sending over the filter cutoff values. 
 
 ## Outputting Audio
 
@@ -21,3 +21,6 @@ When we opted to use the onboard MCU DAC and SPI, we were hesitant of bringing d
 
 ## Filter Cutoff Values
 The microcontroller also takes in an analog signal from the potentiometer and then converts that value into digital signals using the on-board ADC. The clock speed at which is running at a clock speed of 12 MHz. The MCU then sends the signal to the FPGA using SPI communication.
+
+## SPI Controller
+The MCU generated the SPI clock and took charge of sending and recieving the potentiometer and audio data packets by using a load and done flag. Where the load flag would be triggered after the MCU has sent the potentionmeter values and the Done flag would be triggered after the FPGA has finished processing an audio packet.

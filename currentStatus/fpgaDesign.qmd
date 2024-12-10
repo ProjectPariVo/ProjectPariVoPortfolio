@@ -16,7 +16,7 @@ The main design features of the FPGA is to receive digital audio from the extern
 
 To read in the audio into the FPGA, we need to use an Analog to Digital Converter (ADC) to convert analog stereo audio into digital data that our FPGA can manipulate. We opted to use the [PCM1808](https://www.ti.com/lit/ds/symlink/pcm1808.pdf?ts=1732053094807&ref_url=https%253A%252F%252Fwww.google.com%252F), a 24-bit stereo ADC with I2S functionality. We will pass in the two different audio channels into the left and right channels, with the FPGA acting as the controller. The wiring diagram between the FPGA and PCM1808 ADC is outlines how the ADC interfaces with our system. Note that MD1, MD0, and FMT are set low with a pull-down resistor to set the PCM1808 as the worker with an I2S 24-bit data format.
 
-![Original signal with multiple frequency components](images/PCMwiringDiagram.jpeg) 
+![Original signal with multiple frequency components](images/fpgablockdiagram.png) 
 
 I confirm that the audio data is being read with I2S using a logic analyzer. Below are the traces for various audio gains, where D2 connected to DOUT, D4 to BCK, D6 to LRCK, and D7 to SCKI. I set the clock to 12 MHz, therby setting the sampling frequency to be 46.875 kHz, as defined by the SCK. The Left/Right clock is set to 3 MHz, where 24 pulses from bck occur every clock cycle. This is confirmed with the oscilloscope traces. The DOUT shows the digital output of the input audio signal. Since I2S encodes the amplitude into 24-bit values, we would expect lower volumes of music to have smaller 24-bit digital values. This behavior is demonstrated in the following traces, where as we decrease the volume, the MSB is lower and lower.
 
