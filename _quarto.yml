@@ -14,7 +14,7 @@ website:
         - text: System Overview & Documentation 
           href: currentStatus/systemOverview.qmd
 
-        - text: FPGA Design
+        - text: FPGA & PCM1808 Design
           href: currentStatus/fpgaDesign.qmd
 
         - text: MCU Design

@@ -38,6 +38,7 @@ The system is described in the block diagram and wiring diagram below.
 ![Wiring Schematic for Project PariVo](images/WiringDiagram.jpeg) 
 
 ## Bill of Materials
+As our project deals with audio, in addition to the STM32L432KC MCU and UPduino v3.1 with the iCE40 UP5K, we used the following materials. Our new hardware was the PCM1808, an external ADC to convert stereo audio to digital to be read into the FPGA using I2S. More information on the PCM1808 can be found under FPGA & PCM1808 Design.
 
 <table>
   <tr>
@@ -47,7 +48,7 @@ The system is described in the block diagram and wiring diagram below.
     <th>Cost per</th>
   </tr>
   <tr>
-    <td> [PWM1808 ADC Breakout Board](https://www.ti.com/lit/ds/symlink/pcm1808.pdf?HQS=dis-dk-null-digikeymode-dsf-pf-null-wwe&ts=1733738047778&ref_url=https%253A%252F%252Fwww.ti.com%252Fgeneral%252Fdocs%252Fsuppproductinfo.tsp%253FdistId%253D10%2526gotoUrl%253Dhttps%253A%252F%252Fwww.ti.com%252Flit%252Fgpn%252Fpcm1808)  </td>
+    <td> [PCM1808 ADC Breakout Board](https://www.ti.com/lit/ds/symlink/pcm1808.pdf?HQS=dis-dk-null-digikeymode-dsf-pf-null-wwe&ts=1733738047778&ref_url=https%253A%252F%252Fwww.ti.com%252Fgeneral%252Fdocs%252Fsuppproductinfo.tsp%253FdistId%253D10%2526gotoUrl%253Dhttps%253A%252F%252Fwww.ti.com%252Flit%252Fgpn%252Fpcm1808)  </td>
     <td> [PCM1808](https://www.amazon.com/dp/B07X3QLWR8?ref=ppx_yo2ov_dt_b_fed_asin_title) </td>
     <td>1</td>
     <td>7.99</td>
@@ -66,6 +67,12 @@ The system is described in the block diagram and wiring diagram below.
   </tr>
   <tr>
     <td> Aux Cable </td>
+    <td> Sourced from stockroom </td>
+    <td>3</td>
+    <td> n/a </td>
+  </tr>
+  <tr>
+    <td> 8ohm 4W Speakers </td>
     <td> Sourced from stockroom </td>
     <td>3</td>
     <td> n/a </td>
