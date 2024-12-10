@@ -15,10 +15,10 @@ Harvey Mudd College includes a plethora of student DJs that perform regularly ar
 Insight into how we came up with this project can be found in Victoria's [blog](https://vparizot.github.io/hmc-e155-portfolio/posts/post6.html).
 
 ## Problem Statement
-Our overarching goal for this project is to build an operational DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of two input audio files based on physical inputs from the user. 
+Our overarching goal for this project is to build an operational DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of audio files passed in via an AUX cord based on physical inputs from the user. 
 
 ## Objectives
-The objectives of this project is below. 
+The objectives of this project are as follows: 
 
 <ul>
 <li>Use an external ADC to read in a Stereo file into the FPGA</li>
@@ -28,15 +28,31 @@ The objectives of this project is below.
 <li>Output the manipulated audio onto speakers</li>
 </ul>
 
+We met all of these objectives except for digital filtering. While we had digital filtering working in simulation, we ran out of time to implement it in hardware. As a result, we used the potentiometers in RC and CR circuits to implement the lowpass and highpass filters. 
+
 ## System Overview
-The project is split between the MCU and FPGA. The MCU is in charge of (1) outputing the manipulated audio data with the onboard DAC with DMA, (2) interpreting and transferring the user input EQ values to the FPGA, and (3) acting as the controller for SPI communication. The FPGA acts as (1) the controller to PCM1808 ADC to read in audio and (2) implements digital filters to the data based on EQ values from the MCU. To communicate between the MCU and FPGA we use SPI for both the EQ values and audio data. 
+The project is split between the MCU and FPGA. The MCU is in charge of:
+<ul> 
+<li> Outputing the manipulated audio data with the onboard DAC with DMA </li>
+<li> Interpreting and transferring the user input EQ values to the FPGA</li>
+<li> Acting as the controller for SPI communication</li>
+</ul>
+
+The FPGA handles: 
+<ul> 
+<li> Generating the Clock for the PCM1808 ADC to read in audio </li>
+<li> Digital filtering of the audio data based on EQ values from the MCU </li>
+<li> Sending audio into the MCU</li>
+</ul>
+
+Ultimately, filtering was handled with an external circuit on the output of the MCU.
 
 The system is described in the block diagram and wiring diagram below. 
 
 
 ![FPGA Diagram for Project PariVo](images/actualfpga.png) 
 
-![Wiring Schematic for Project PariVo](images/kicadschematic.png) 
+![Wiring Schematic for Project PariVo](images/updatedschematic.png) 
 
 ## Bill of Materials
 As our project deals with audio, in addition to the STM32L432KC MCU and UPduino v3.1 with the iCE40 UP5K, we used the following materials. Our new hardware was the PCM1808, an external ADC to convert stereo audio to digital to be read into the FPGA using I2S. More information on the PCM1808 can be found under FPGA & PCM1808 Design.
@@ -61,8 +77,8 @@ As our project deals with audio, in addition to the STM32L432KC MCU and UPduino 
     <td>$1.78</td>
   </tr>
   <tr>
-    <td> [Breadboard-Friendly Stereo Headphone Jack](https://cdn-shop.adafruit.com/product-files/1699/STX3120.pdf) </td>
-    <td> [Product ID: 1699](https://www.adafruit.com/product/1699) </td>
+    <td> [Stereo Headphone Jack](https://cdn-shop.adafruit.com/product-files/1699/STX3120.pdf) </td>
+    <td> [ID: 1699](https://www.adafruit.com/product/1699) </td>
     <td>3</td>
     <td>$0.95</td>
   </tr>
@@ -80,4 +96,10 @@ As our project deals with audio, in addition to the STM32L432KC MCU and UPduino 
   </tr>
 </table>
 
+## In-Progress Photos
+Here are some photos of our design process!
 
+![System Hooked up to Wooden Box](images/inprog1.jpeg) 
+![System Hooked up to Wooden Box](images/inprog2.jpeg) 
+
+![Debugging MCU Audio Output](images/inprog4.png) 

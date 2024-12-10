@@ -28,30 +28,34 @@ Take a look at her [portfolio](https://vparizot.github.io/hmc-e155-portfolio/) t
 ### Audrey Vo - Valley Girl, CA
 Audrey is an APISPAM Head Sponsor, Atwood Dorm President, and Machine Shop Proctor at Harvey Mudd. The past few summers, she has been able to participate in summer research with Prof. Dodds in “Summer Start-Up” and with Prof. Gokli as part of the Riggs Fellowship. She was previously HMC 2025 Class President and also a member of the Prisoner Education Project.
 
-Audrey is currently a resident of Southern California, and have lived here her entire life. (If you have any recommendations of things to do in CA, please let her know!). In her free time, she love to play pickleball, try new foods, and spend time with friends.
+Audrey is currently a resident of Southern California, and have lived here her entire life. If you have any recommendations of things to do in CA, please let her know! In her free time, she love to play pickleball, try new foods, and spend time with friends.
 
 If you are interested in learning more about Audrey, please feel free to connect on [LinkedIn](https://www.linkedin.com/in/audrey-vo-us23/) or explore her [portfolio](https://audreyvo23.github.io/hmc-e155-portfolio/)!
 
 ## Acknowledgements
-We would like to thank Professor Brake for his help and guidance throughout the project, especially with his help debugging. We would also like to thank the the E155 Grutors, especially Kavi, for going above and beyond with helping us think about and implement our project and labs. Finally, we would like to thank our classmates, who were always willing to lend a second perspective, even during late nights in the lab. 
+We would like to thank Professor Brake for his help and guidance throughout the project. We would also like to thank the the E155 Grutors, especially Kavi, for going above and beyond with helping us think about and implement our project and labs. Finally, we would like to thank our classmates, who were always willing to lend a second perspective, even during late nights in the lab. 
 
 # References
-## Previous Projects
+### Previous Projects
 We took inspiration from the following projects:
 
-[](https://erejto.github.io/FPGA-Synth-project-portfolio/fpga.html#spi-to-dac)
+[Kevin Box and Eli Rejito's Digital Synthisizer MicroPs Final Project](https://erejto.github.io/FPGA-Synth-project-portfolio/fpga.html#spi-to-dac)
 
-https://briansimpkins.github.io/E155_Final/
+[Brian Simpkins and Kevin Kim's Auto Audio Harmonizer](https://briansimpkins.github.io/E155_Final/)
 
-## DMA & DAC Documentation
-https://youtu.be/X9T0ZND_eZc?si=qwe-sAcXkT96tGlL
-https://m0agx.eu/generating-signals-with-stm32l4-timer-dma-and-dac.html
-https://wiki.st.com/stm32mcu/wiki/Getting_started_with_DAC#Configuring_DAC
-https://www.st.com/content/ccc/resource/technical/document/application_note/05/fb/41/91/39/02/4d/1e/CD00259245.pdf/files/CD00259245.pdf/jcr:content/translations/en.CD00259245.pdf
-https://www.st.com/resource/en/application_note/an4566-extending-the-dac-performance-of-stm32-microcontrollers-stmicroelectronics.pdf
+### DMA & DAC Documentation
+[STM32L4 DAC & DMA by Learning Embedded World](https://youtu.be/X9T0ZND_eZc?si=qwe-sAcXkT96tGlL)
+
+[Generating signals with STM32L4 timer, DMA, and DAC](https://m0agx.eu/generating-signals-with-stm32l4-timer-dma-and-dac.html)
+
+[STM Wiki: Getting started with DAC](https://wiki.st.com/stm32mcu/wiki/Getting_started_with_DAC#Configuring_DAC)
+
+[STM Application note: Audio & waveform generation using DAC in STM32 products](https://www.st.com/content/ccc/resource/technical/document/application_note/05/fb/41/91/39/02/4d/1e/CD00259245.pdf/files/CD00259245.pdf/jcr:content/translations/en.CD00259245.pdf)
+
+[STM Application note: Extending the DAC performance of STM32 microcontrollers](https://www.st.com/resource/en/application_note/an4566-extending-the-dac-performance-of-stm32-microcontrollers-stmicroelectronics.pdf)
 
 
-## Datasheets
+### Datasheets
 [PCM1808 Datasheet](https://www.ti.com/lit/ds/symlink/pcm1808.pdf?ts=1731937989054&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FPCM1808%253Futm_source%253Dgoogle%2526utm_medium%253Dcpc%2526utm_campaign%253Dasc-null-null-44700045336317128_prodfolderdynamic-cpc-pf-google-ww_en_int%2526utm_content%253Dprodfolddynamic%2526ds_k%253DDYNAMIC+SEARCH+ADS%2526DCM%253Dyes%2526gad_source%253D1%2526gclid%253DCj0KCQiA6Ou5BhCrARIsAPoTxrC-ZPLRVI16G4mu0UM6A9g9WPtQclSm7d-XvYNru5zxwk1LpYgqgF8aAn37EALw_wcB%2526gclsrc%253Daw.ds)
 
 [STM32L432KC Reference manual](https://hmc-e155.github.io/assets/doc/rm0394-stm32l41xxx42xxx43xxx44xxx45xxx46xxx-advanced-armbased-32bit-mcus-stmicroelectronics.pdf#page=296&zoom=100,89,325)
