@@ -96,10 +96,10 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-project-status" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Project Status</span>
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-project-parivo" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Project Parivo</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-project-status">    
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-project-parivo">    
         <li class="dropdown-header">Project Parivo Project</li>
         <li>
     <a class="dropdown-item" href="../currentStatus/systemOverview.html">
@@ -120,6 +120,10 @@ ul.task-list li input[type="checkbox"] {
         <li>
     <a class="dropdown-item" href="../currentStatus/resultsAndAnalysis.html">
  <span class="dropdown-text">Results &amp; Analysis of System</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../currentStatus/hardwareDesign.html">
+ <span class="dropdown-text">Hardware Design</span></a>
   </li>  
     </ul>
   </li>
@@ -185,7 +189,7 @@ ul.task-list li input[type="checkbox"] {
 <p>We ended up using mono audio, only sending out the left channel of the stereo data to the MCU for output due to problems with outputting audio. We originally had planned to configure the MCU Serial Audio Interface (SAI) peripheral to I2S. This would allow us to use standard audio interfacing, sending the left and right channel at the same time. While we got close to transmitting, the lack of examples and unclear documentation caused us to pivot to using an external DAC to output audio from the FPGA. We opted to use a UDA1334A I2S DAC. To test this DAC, we used the FPGA to generate clock signals, and hooked it up directly to the ADC for testing. Despite configuring how it requested in the <a href="https://cdn-shop.adafruit.com/product-files/3678/UDA1334ATS.pdf">datasheet</a>, we could not get any signals coming out of the DAC. Finally, we opted to resort to SPI between the FPGA and MCU, allowing us to leverage the prexisting SPI transaction for the potentiometer values.</p>
 <section id="spi-protocol" class="level2">
 <h2 class="anchored" data-anchor-id="spi-protocol">SPI Protocol</h2>
-<p>The MCU and FPGA pass data using SPI protocol, where it passes potentiometer values from the MCU to the FPGA and audio data from the FPGA to the MCU in 8-bit packages.</p>
+<p>The MCU and FPGA pass data using SPI protocol, where it passes potentiometer values from the MCU to the FPGA and audio data from the FPGA to the MCU in 8-bit packages. The SPI handshake works with two flags, the Load Flag and the Done Flag. The Load Flag would be raised while the MCU was transmitting EQ values. The Done Flag would be raised once the FPGA was done reading in an audio sample and would be lowered after the FPGA transmitted the audio data to the MCU.</p>
 
 
 </section>

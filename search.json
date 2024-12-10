@@ -18,14 +18,14 @@
     "href": "currentStatus/mcuDesign.html#outputting-audio",
     "title": "MCU Design",
     "section": "Outputting Audio",
-    "text": "Outputting Audio\nThe MCU takes in 8-bit mono audio data from the FPGA using SPI and stores the value in memory. As the onboard Digital-to-Analog Converter (DAC) can only read positive voltages, we converted our signed values to unsigned values and stored the value into a variable named leftAudio. We then used the onboard MCU DAC with Direct Memory Access (DMA) to convert the digital data to an analog signal. The DMA transfer was initiated by a reload event of TIM7 and would move the value stored in leftAudio into the output register of the DAC. By setting DMA to circular mode, it would continuously read from the leftAudio variable, as it was updated by SPI. Therefore, it was imperative to ensure that the clock speed of both the FPGA and MCU would be fast enough as to not warp the audio.\nTo make our code scalable to stereo audio, we used both DAC1 and DAC2 and their corresponding DMA channels to output the audio to two separate pins, PA4 and PA5. This also allowed us the flexibility to manipulate the output analog audio with circuits to apply lowpass and highpass filters.\nWhen we opted to use the onboard MCU DAC and SPI, we were hesitant of bringing down the audio data from 24-bit to 8-bit resolution, which would mean lowering the discrete levels of audio from 16,777,215 to 256. While this would not impact the maximum amplitude, it would reduce the precision and dynamic range. We decided the best way to test this would be by doing – so we implemented the DAC and DMA with 8-bit resolution and tried to see if we could spot an audible difference. When testing with sine waves at different frequencies as well as our personal playlists, we could not tell the difference between the original audio versus the MCU output audio. Therefore, we decided that 8-bit audio would be sufficient."
+    "text": "Outputting Audio\nThe MCU takes in 8-bit mono audio data from the FPGA using SPI and stores the value in memory. As the onboard Digital-to-Analog Converter (DAC) can only read positive voltages, we converted our signed values to unsigned values and stored the value into a variable named leftAudio. We then used the onboard MCU DAC with Direct Memory Access (DMA) to convert the digital data to an analog signal. The DMA transfer was initiated by a reload event of TIM7 and would move the value stored in leftAudio into the output register of the DAC. By setting DMA to circular mode, it would continuously read from the leftAudio variable, as it was updated by SPI. Therefore, it was imperative to ensure that the clock speed of both the FPGA and MCU would be fast enough as to not warp the audio.\nTo make our code scalable to stereo audio, we used both DAC1 and DAC2 and their corresponding DMA channels to output the audio to two separate pins, PA4 and PA5. This also allowed us the flexibility to manipulate the output analog audio with circuits to apply lowpass and highpass filters.\nWhen we opted to use the onboard MCU DAC and SPI, we were hesitant of bringing down the audio data from 24-bit to 8-bit resolution, which would mean lowering the discrete levels of audio from 16,777,215 to 256. While this would not impact the maximum amplitude, it would reduce the precision and dynamic range. We decided the best way to test this would be by doing – so we implemented the DAC and DMA with 8-bit resolution and tried to see if we could spot an audible difference. When testing with sine waves at different frequencies as well as our personal playlists, we could not tell the difference between the original audio versus the MCU output audio. Therefore, we decided that 8-bit audio would be sufficient for this project."
   },
   {
     "objectID": "currentStatus/mcuDesign.html#filter-cutoff-values",
     "href": "currentStatus/mcuDesign.html#filter-cutoff-values",
     "title": "MCU Design",
     "section": "Filter Cutoff Values",
-    "text": "Filter Cutoff Values\nThe microcontroller also takes in an analog signal from the potentiometer and then converts that value into digital signals using the on-board ADC. The clock is running at a speed of 12 MHz. The MCU then sends the signal to the FPGA using SPI communication."
+    "text": "Filter Cutoff Values\nThe EQ values are determined by potentiometer voltage dividers being routed into the MCU. The MCU ADC converts these analog values into 8-bit values between 0 to 256, which will ultimately be used to determine the passband frequencies for the low and high pass filters.\nAfter the MCU interprets these voltages into 8-bit values, it passes these values using SPI to the FPGA. Below is an example of a working SPI interaction. When the potentiometer is set to approximately 79.\n\n\n\nEQ Values Printed Out Debug Terminal\n\n\n\n\n\nLogic Analyzer SPI Interaction for EQ Values"
   },
   {
     "objectID": "currentStatus/mcuDesign.html#spi-controller",
@@ -67,28 +67,35 @@
     "href": "currentStatus/systemOverview.html#problem-statement",
     "title": "System Overview & Documentation",
     "section": "Problem Statement",
-    "text": "Problem Statement\nOur overarching goal for this project is to build an operational DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of two input audio files based on physical inputs from the user."
+    "text": "Problem Statement\nOur overarching goal for this project is to build an operational DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of audio files passed in via an AUX cord based on physical inputs from the user."
   },
   {
     "objectID": "currentStatus/systemOverview.html#objectives",
     "href": "currentStatus/systemOverview.html#objectives",
     "title": "System Overview & Documentation",
     "section": "Objectives",
-    "text": "Objectives\nThe objectives of this project is below.\n\n\nUse an external ADC to read in a Stereo file into the FPGA\n\n\nCommunicate audio data between the MCU and FPGA\n\n\nImplement low pass and high pass digital filters using the FPGA\n\n\nVary audio volume based on user gain inputs\n\n\nOutput the manipulated audio onto speakers"
+    "text": "Objectives\nThe objectives of this project are as follows:\n\n\nUse an external ADC to read in a Stereo file into the FPGA\n\n\nCommunicate audio data between the MCU and FPGA\n\n\nImplement low pass and high pass digital filters using the FPGA\n\n\nVary audio volume based on user gain inputs\n\n\nOutput the manipulated audio onto speakers\n\n\nWe met all of these objectives except for digital filtering. While we had digital filtering working in simulation, we ran out of time to implement it in hardware. As a result, we used the potentiometers in RC and CR circuits to implement the lowpass and highpass filters."
   },
   {
     "objectID": "currentStatus/systemOverview.html#system-overview",
     "href": "currentStatus/systemOverview.html#system-overview",
     "title": "System Overview & Documentation",
     "section": "System Overview",
-    "text": "System Overview\nThe project is split between the MCU and FPGA. The MCU is in charge of (1) outputing the manipulated audio data with the onboard DAC with DMA, (2) interpreting and transferring the user input EQ values to the FPGA, and (3) acting as the controller for SPI communication. The FPGA acts as (1) the controller to PCM1808 ADC to read in audio and (2) implements digital filters to the data based on EQ values from the MCU. To communicate between the MCU and FPGA we use SPI for both the EQ values and audio data.\nThe system is described in the block diagram and wiring diagram below.\n\n\n\nFPGA Diagram for Project PariVo\n\n\n\n\n\nWiring Schematic for Project PariVo"
+    "text": "System Overview\nThe project is split between the MCU and FPGA. The MCU is in charge of:\n\n\nOutputing the manipulated audio data with the onboard DAC with DMA\n\n\nInterpreting and transferring the user input EQ values to the FPGA\n\n\nActing as the controller for SPI communication\n\n\nThe FPGA handles:\n\n\nGenerating the Clock for the PCM1808 ADC to read in audio\n\n\nDigital filtering of the audio data based on EQ values from the MCU\n\n\nSending audio into the MCU\n\n\nUltimately, filtering was handled with an external circuit on the output of the MCU.\nThe system is described in the block diagram and wiring diagram below.\n\n\n\nFPGA Diagram for Project PariVo\n\n\n\n\n\nWiring Schematic for Project PariVo"
   },
   {
     "objectID": "currentStatus/systemOverview.html#bill-of-materials",
     "href": "currentStatus/systemOverview.html#bill-of-materials",
     "title": "System Overview & Documentation",
     "section": "Bill of Materials",
-    "text": "Bill of Materials\nAs our project deals with audio, in addition to the STM32L432KC MCU and UPduino v3.1 with the iCE40 UP5K, we used the following materials. Our new hardware was the PCM1808, an external ADC to convert stereo audio to digital to be read into the FPGA using I2S. More information on the PCM1808 can be found under FPGA & PCM1808 Design.\n\n\n\nItem\n\n\nPart Number\n\n\nQuantity\n\n\nCost per\n\n\n\n\nPCM1808 ADC Breakout Board\n\n\nPCM1808\n\n\n1\n\n\n7.99\n\n\n\n\n10k Slide Potentiometer\n\n\nPTA2043-2015CPB103-ND\n\n\n2\n\n\n$1.78\n\n\n\n\nBreadboard-Friendly Stereo Headphone Jack\n\n\nProduct ID: 1699\n\n\n3\n\n\n$0.95\n\n\n\n\nAux Cable\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a\n\n\n\n\n8Ohm 4W Speakers\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a"
+    "text": "Bill of Materials\nAs our project deals with audio, in addition to the STM32L432KC MCU and UPduino v3.1 with the iCE40 UP5K, we used the following materials. Our new hardware was the PCM1808, an external ADC to convert stereo audio to digital to be read into the FPGA using I2S. More information on the PCM1808 can be found under FPGA & PCM1808 Design.\n\n\n\nItem\n\n\nPart Number\n\n\nQuantity\n\n\nCost per\n\n\n\n\nPCM1808 ADC Breakout Board\n\n\nPCM1808\n\n\n1\n\n\n7.99\n\n\n\n\n10k Slide Potentiometer\n\n\nPTA2043-2015CPB103-ND\n\n\n2\n\n\n$1.78\n\n\n\n\nStereo Headphone Jack\n\n\nID: 1699\n\n\n3\n\n\n$0.95\n\n\n\n\nAux Cable\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a\n\n\n\n\n8Ohm 4W Speakers\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a"
+  },
+  {
+    "objectID": "currentStatus/systemOverview.html#in-progress-photos",
+    "href": "currentStatus/systemOverview.html#in-progress-photos",
+    "title": "System Overview & Documentation",
+    "section": "In-Progress Photos",
+    "text": "In-Progress Photos\nHere are some photos of our design process!\n \n\n\n\nDebugging MCU Audio Output"
   },
   {
     "objectID": "currentStatus/digitalFiltering.html",
@@ -144,35 +151,14 @@
     "href": "index.html#about-us",
     "title": "Project Parivo",
     "section": "About Us",
-    "text": "About Us\nAudrey and Victoria are seniors at Harvey Mudd College, majoring in engineering, and passionate about music. For their E155 (AKA MicroPs) Final Project, they are working together to create a two-channel DJ mixer. Ultimately, they hope to DJ together with their mixer.\n\nVictoria Parizot - Norwalk, CT\nVictoria Parizot is most interested with mechanical and electrical design, and excited to be taking MicroPs this semester! At Harvey Mudd, she is a West Dorm President, a Machine Shop Proctor, and a Member of the Tau Beta Pi Honors Society. In her free time, she enjoys woodworking, taking and developing film photos, and sailing.\nTake a look at her portfolio to learn more!\n\n\nAudrey Vo - Valley Girl, CA\nAudrey is an APISPAM Head Sponsor, Atwood Dorm President, and Machine Shop Proctor at Harvey Mudd. The past few summers, she has been able to participate in summer research with Prof. Dodds in “Summer Start-Up” and with Prof. Gokli as part of the Riggs Fellowship. She was previously HMC 2025 Class President and also a member of the Prisoner Education Project.\nAudrey is currently a resident of Southern California, and have lived here her entire life. (If you have any recommendations of things to do in CA, please let her know!). In her free time, she love to play pickleball, try new foods, and spend time with friends.\nIf you are interested in learning more about Audrey, please feel free to connect on LinkedIn or explore her portfolio!"
+    "text": "About Us\nAudrey and Victoria are seniors at Harvey Mudd College, majoring in engineering, and passionate about music. For their E155 (AKA MicroPs) Final Project, they are working together to create a two-channel DJ mixer. Ultimately, they hope to DJ together with their mixer.\n\nVictoria Parizot - Norwalk, CT\nVictoria Parizot is most interested with mechanical and electrical design, and excited to be taking MicroPs this semester! At Harvey Mudd, she is a West Dorm President, a Machine Shop Proctor, and a Member of the Tau Beta Pi Honors Society. In her free time, she enjoys woodworking, taking and developing film photos, and sailing.\nTake a look at her portfolio to learn more!\n\n\nAudrey Vo - Valley Girl, CA\nAudrey is an APISPAM Head Sponsor, Atwood Dorm President, and Machine Shop Proctor at Harvey Mudd. The past few summers, she has been able to participate in summer research with Prof. Dodds in “Summer Start-Up” and with Prof. Gokli as part of the Riggs Fellowship. She was previously HMC 2025 Class President and also a member of the Prisoner Education Project.\nAudrey is currently a resident of Southern California, and have lived here her entire life. If you have any recommendations of things to do in CA, please let her know! In her free time, she love to play pickleball, try new foods, and spend time with friends.\nIf you are interested in learning more about Audrey, please feel free to connect on LinkedIn or explore her portfolio!"
   },
   {
     "objectID": "index.html#acknowledgements",
     "href": "index.html#acknowledgements",
     "title": "Project Parivo",
     "section": "Acknowledgements",
-    "text": "Acknowledgements\nWe would like to thank Professor Brake for his help and guidance throughout the project, especially with his help debugging. We would also like to thank the the E155 Grutors, especially Kavi, for going above and beyond with helping us think about and implement our project and labs. Finally, we would like to thank our classmates, who were always willing to lend a second perspective, even during late nights in the lab."
-  },
-  {
-    "objectID": "index.html#previous-projects",
-    "href": "index.html#previous-projects",
-    "title": "Project Parivo",
-    "section": "Previous Projects",
-    "text": "Previous Projects\nWe took inspiration from the following projects:\n\nhttps://briansimpkins.github.io/E155_Final/"
-  },
-  {
-    "objectID": "index.html#dma-dac-documentation",
-    "href": "index.html#dma-dac-documentation",
-    "title": "Project Parivo",
-    "section": "DMA & DAC Documentation",
-    "text": "DMA & DAC Documentation\nhttps://youtu.be/X9T0ZND_eZc?si=qwe-sAcXkT96tGlL https://m0agx.eu/generating-signals-with-stm32l4-timer-dma-and-dac.html https://wiki.st.com/stm32mcu/wiki/Getting_started_with_DAC#Configuring_DAC https://www.st.com/content/ccc/resource/technical/document/application_note/05/fb/41/91/39/02/4d/1e/CD00259245.pdf/files/CD00259245.pdf/jcr:content/translations/en.CD00259245.pdf https://www.st.com/resource/en/application_note/an4566-extending-the-dac-performance-of-stm32-microcontrollers-stmicroelectronics.pdf"
-  },
-  {
-    "objectID": "index.html#datasheets",
-    "href": "index.html#datasheets",
-    "title": "Project Parivo",
-    "section": "Datasheets",
-    "text": "Datasheets\nPCM1808 Datasheet\nSTM32L432KC Reference manual\nSTM32L432KC Datasheet\niCE40 UltraPlus Family Data Sheet"
+    "text": "Acknowledgements\nWe would like to thank Professor Brake for his help and guidance throughout the project. We would also like to thank the the E155 Grutors, especially Kavi, for going above and beyond with helping us think about and implement our project and labs. Finally, we would like to thank our classmates, who were always willing to lend a second perspective, even during late nights in the lab."
   },
   {
     "objectID": "about.html",
@@ -193,49 +179,49 @@
     "href": "currentStatus/fpgaToMcu.html#spi-protocol",
     "title": "FPGA to MCU",
     "section": "SPI Protocol",
-    "text": "SPI Protocol\nThe MCU and FPGA pass data using SPI protocol, where it passes potentiometer values from the MCU to the FPGA and audio data from the FPGA to the MCU in 8-bit packages."
+    "text": "SPI Protocol\nThe MCU and FPGA pass data using SPI protocol, where it passes potentiometer values from the MCU to the FPGA and audio data from the FPGA to the MCU in 8-bit packages. The SPI handshake works with two flags, the Load Flag and the Done Flag. The Load Flag would be raised while the MCU was transmitting EQ values. The Done Flag would be raised once the FPGA was done reading in an audio sample and would be lowered after the FPGA transmitted the audio data to the MCU."
   },
   {
     "objectID": "currentStatus/fpgaDesign.html",
     "href": "currentStatus/fpgaDesign.html",
     "title": "FPGA Design",
     "section": "",
-    "text": "The main design features of the FPGA is to receive digital audio from the external ADC, apply digital filters to the audio based on user inputs passed from the MCU, and then send the filtered audio to the MCU. The FPGA receives audio from the ADC using an I2S Communication Protocol, and then implements the onboard multiply-accumulator block (MAC) to the data and then outputs it. Due to time constraints, we were not able to implement digital filtering on our hardware, but we were able to get the desired behavior in ModelSim using the MAC."
+    "text": "The main design features of the FPGA is to receive digital audio from the external ADC, apply digital filters to the audio based on user inputs passed from the MCU, and then send the filtered audio to the MCU. The FPGA receives audio from the ADC using an I2S Communication Protocol, and next implements the onboard multiply-accumulator block (MAC) to the data and then outputs it. Due to time constraints, we were not able to implement digital filtering on our hardware, but we were able to get the desired behavior in ModelSim using the MAC."
   },
   {
     "objectID": "currentStatus/fpgaDesign.html#fpga-design-overview",
     "href": "currentStatus/fpgaDesign.html#fpga-design-overview",
     "title": "FPGA Design",
     "section": "",
-    "text": "The main design features of the FPGA is to receive digital audio from the external ADC, apply digital filters to the audio based on user inputs passed from the MCU, and then send the filtered audio to the MCU. The FPGA receives audio from the ADC using an I2S Communication Protocol, and then implements the onboard multiply-accumulator block (MAC) to the data and then outputs it. Due to time constraints, we were not able to implement digital filtering on our hardware, but we were able to get the desired behavior in ModelSim using the MAC."
+    "text": "The main design features of the FPGA is to receive digital audio from the external ADC, apply digital filters to the audio based on user inputs passed from the MCU, and then send the filtered audio to the MCU. The FPGA receives audio from the ADC using an I2S Communication Protocol, and next implements the onboard multiply-accumulator block (MAC) to the data and then outputs it. Due to time constraints, we were not able to implement digital filtering on our hardware, but we were able to get the desired behavior in ModelSim using the MAC."
   },
   {
-    "objectID": "currentStatus/fpgaDesign.html#communicating-eq-values-to-fpga",
-    "href": "currentStatus/fpgaDesign.html#communicating-eq-values-to-fpga",
+    "objectID": "currentStatus/fpgaDesign.html#generating-coefficients-for-fir-filters",
+    "href": "currentStatus/fpgaDesign.html#generating-coefficients-for-fir-filters",
     "title": "FPGA Design",
-    "section": "Communicating EQ Values to FPGA",
-    "text": "Communicating EQ Values to FPGA\nThe EQ values are determined by potentiometer voltage dividers being routed into the MCU. The MCU ADC converts these analog values into 8-bit values between 0 to 256, which will ultimately be used to determine the passband frequencies for the low and high pass filters.\nAfter the MCU interprets these voltages into 8-bit values, it passes these values using SPI to the FPGA. Below is an example of a working SPI interaction. When the potentiometer is set to approximately 79.\n\n\n\nEQ Values Printed Out Debug Terminal\n\n\n\n\n\nLogic Analyzer SPI"
+    "section": "Generating Coefficients for FIR Filters",
+    "text": "Generating Coefficients for FIR Filters\nWe opted to pass in FIR coefficients generated in MatLab so that we could utilize the DSP toolbox and easily visualize and adjust the filter and taps.\nAs a result, our Matlab script would generate the lowpass and highpass filter coefficients for the 16 EQ value buckets. and store these coefficients into a .txt file to be read by the FPGA.\nIn order to use these coefficients in the FPGA, we wanted to convert the values from floating point to integer, which requires scaling the coefficients by a value of g. The floating point and integer coefficients are shown below, where if we scale the signal we see that the shape of the plots are the same. Thus, when plotting the output signal, it is critical to scale the signal by dividing by g. As there would only be 32 g values, we decided that we would hard code these values into the FPGA.\nThe below figures are for a lowpass filter with 128 taps and a pass band ending at 1250 hz.\n\n\n\nInteger coefficients are scaled up from floating point coefficients\n\n\n\n\n\nFloating point and integer coefficients share the same shape\n\n\n\n\n\nFIR Filter as defined by coefficients\n\n\nWe then confirmed the design of these filters by creating a signal with multiple frequency components and applying our filter and gain scaling. To do this, we copied our verilog logic, allowing us to confirm that our logic acted as expected.\n\n\n\nOriginal signal with multiple frequency components\n\n\n\n\n\nOutput vs original signal"
   },
   {
-    "objectID": "currentStatus/fpgaDesign.html#generating-coefficients",
-    "href": "currentStatus/fpgaDesign.html#generating-coefficients",
+    "objectID": "currentStatus/fpgaDesign.html#passing-in-the-coefficients-to-the-fpga",
+    "href": "currentStatus/fpgaDesign.html#passing-in-the-coefficients-to-the-fpga",
     "title": "FPGA Design",
-    "section": "Generating Coefficients",
-    "text": "Generating Coefficients\nWe opted to pass in FIR coefficients generated in MatLab so that we could utilize the DSP toolbox and easily visualize and adjust the filter and taps.\nIn order to use these coefficients in the FPGA, we wanted to convert the values from floating point to integer, which requires scaling the coefficients by a value of g. The floating point and integer coefficients are shown below, where if we scale the signal we see that the shape of the plots are the same. Thus, when plotting the output signal, it is critical to scale the signal by dividing by g.\nThe below figures are for a lowpass filter with 128 taps and a pass band ending at 1250 hZ.\n\n\n\nInteger coefficients are scaled up from floating point coefficients\n\n\n\n\n\nFloating point and integer coefficients share the same shape\n\n\n\n\n\nFIR Filter as defined by coefficients\n\n\nWe then confirmed the design of these filters by creating a signal with multiple frequency components and applying our filter and gain scaling. To do this, we copied out verilog logic, allowing us to confirm that our logic acted as expected.\n\n\n\nOriginal signal with multiple frequency components\n\n\n\n\n\nOutput and original signal"
-  },
-  {
-    "objectID": "currentStatus/fpgaDesign.html#passing-in-the-coefficients",
-    "href": "currentStatus/fpgaDesign.html#passing-in-the-coefficients",
-    "title": "FPGA Design",
-    "section": "Passing in the Coefficients",
-    "text": "Passing in the Coefficients\nIn order to retrieve the proper coefficients, the filter number was inputted based on a digital input from the MCU. Thus, based on what the user selects, the code will then retrieve the set of 128 coefficients that correspond to the filter value that they requested. This was done by saving a .txt file with all 2048 coefficients (128 coefficients per filter, 16 different filter options), and then storing the desired coefficients synchronously in BRAM. An FSM is used to retrieve all 128 coefficients on each clock cycle that will then be used to digitally filter the signal."
+    "section": "Passing in the Coefficients to the FPGA",
+    "text": "Passing in the Coefficients to the FPGA\nIn order to retrieve the proper coefficients, the filter number was input based on a digital input from the MCU. Thus, based on what the user selects, the code will then retrieve the set of 128 coefficients that correspond to the filter value that they requested. This was done by saving a .txt file with all 2048 coefficients (128 coefficients per filter, 16 different filter options), and then storing the desired coefficients synchronously in BRAM. An FSM is used to retrieve all 128 coefficients on each clock cycle that will then be used to digitally filter the signal."
   },
   {
     "objectID": "currentStatus/fpgaDesign.html#modeling-dsp",
     "href": "currentStatus/fpgaDesign.html#modeling-dsp",
     "title": "FPGA Design",
     "section": "Modeling DSP",
-    "text": "Modeling DSP\nThe modules created in ModelSim contained code from Lab 7 to retrieve the different taps read from a .txt file stored in memory based on desired filter values received from the MCU via SPI. The FPGA would also create a signal window that would contain the past 10 samples of digital audio from the ADC to be used for FIR filtering. This signal window and the retrieved taps would then be inputted to the MAC to be multiplied and summed up together. The MAC was configured to take in 2 signed 16-bit inputs, and then output a 33-bit result for 10 tap coefficients. It also received the system clock as input generated from the high speed oscillator at 12 MHz. The output data from the MAC was then scaled back down by being divided by the filter’s gains, and then concatenated to 8 bits so that it could be sent out to the MCU via SPI.\nMAC block used within digital filtering.\nSimulated testbench of digital filtering implementation."
+    "text": "Modeling DSP\nThe modules created in ModelSim contained code from Lab 7 to retrieve the different taps read from a .txt file stored in memory based on desired filter values received from the MCU via SPI. The FPGA would also create a signal window that would contain the past 10 samples of digital audio from the ADC to be used for FIR filtering. This signal window and the retrieved taps would then be input to the MAC to be multiplied and summed up together. The MAC was configured to take in 2 signed 16-bit inputs, and then output a 33-bit result for 10 tap coefficients. It also received the system clock as input generated from the high speed oscillator at 12 MHz. The output data from the MAC was then scaled back down by being divided by the filter’s gains, and then concatenated to 8 bits so that it could be sent out to the MCU via SPI.\n\n\n\nMAC block used within digital filtering\n\n\n\n\n\nSimulated testbench of digital filtering implementation\n\n\nAs shown in the images above, we got DSP to work in simulation, but did not succeed in implementing in hardware."
+  },
+  {
+    "objectID": "currentStatus/fpgaDesign.html#outputting-audio",
+    "href": "currentStatus/fpgaDesign.html#outputting-audio",
+    "title": "FPGA Design",
+    "section": "Outputting Audio",
+    "text": "Outputting Audio\nTo output the audio to the MCU, the FPGA would wait for the audio data to be read in from the PCM1808. Once the entire sample was read, the left and right variables would be updated, and the Done flag would be raised. Then, the eq1_core module would pass the updated left channel audio data to the MCU. Once the left audio data was shifted out, the Done flag would be lowered. To learn more about the SPI handshake, see “FPGA and MCU Communication”"
   },
   {
     "objectID": "currentStatus/resultsAndAnalysis.html",

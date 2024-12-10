@@ -96,10 +96,10 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-project-status" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Project Status</span>
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-project-parivo" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Project Parivo</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-project-status">    
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-project-parivo">    
         <li class="dropdown-header">Project Parivo Project</li>
         <li>
     <a class="dropdown-item" href="../currentStatus/systemOverview.html">
@@ -120,6 +120,10 @@ ul.task-list li input[type="checkbox"] {
         <li>
     <a class="dropdown-item" href="../currentStatus/resultsAndAnalysis.html">
  <span class="dropdown-text">Results &amp; Analysis of System</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../currentStatus/hardwareDesign.html">
+ <span class="dropdown-text">Hardware Design</span></a>
   </li>  
     </ul>
   </li>
@@ -144,6 +148,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#objectives" id="toc-objectives" class="nav-link" data-scroll-target="#objectives">Objectives</a></li>
   <li><a href="#system-overview" id="toc-system-overview" class="nav-link" data-scroll-target="#system-overview">System Overview</a></li>
   <li><a href="#bill-of-materials" id="toc-bill-of-materials" class="nav-link" data-scroll-target="#bill-of-materials">Bill of Materials</a></li>
+  <li><a href="#in-progress-photos" id="toc-in-progress-photos" class="nav-link" data-scroll-target="#in-progress-photos">In-Progress Photos</a></li>
   </ul>
 </nav>
     </div>
@@ -193,11 +198,11 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="problem-statement" class="level2">
 <h2 class="anchored" data-anchor-id="problem-statement">Problem Statement</h2>
-<p>Our overarching goal for this project is to build an operational DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of two input audio files based on physical inputs from the user.</p>
+<p>Our overarching goal for this project is to build an operational DJ Mixer that manipulates audio files based on user inputs. Our mixer will be able to control the frequency and gain of audio files passed in via an AUX cord based on physical inputs from the user.</p>
 </section>
 <section id="objectives" class="level2">
 <h2 class="anchored" data-anchor-id="objectives">Objectives</h2>
-<p>The objectives of this project is below.</p>
+<p>The objectives of this project are as follows:</p>
 <ul>
 <li>
 Use an external ADC to read in a Stereo file into the FPGA
@@ -215,10 +220,35 @@ Vary audio volume based on user gain inputs
 Output the manipulated audio onto speakers
 </li>
 </ul>
+<p>We met all of these objectives except for digital filtering. While we had digital filtering working in simulation, we ran out of time to implement it in hardware. As a result, we used the potentiometers in RC and CR circuits to implement the lowpass and highpass filters.</p>
 </section>
 <section id="system-overview" class="level2">
 <h2 class="anchored" data-anchor-id="system-overview">System Overview</h2>
-<p>The project is split between the MCU and FPGA. The MCU is in charge of (1) outputing the manipulated audio data with the onboard DAC with DMA, (2) interpreting and transferring the user input EQ values to the FPGA, and (3) acting as the controller for SPI communication. The FPGA acts as (1) the controller to PCM1808 ADC to read in audio and (2) implements digital filters to the data based on EQ values from the MCU. To communicate between the MCU and FPGA we use SPI for both the EQ values and audio data.</p>
+The project is split between the MCU and FPGA. The MCU is in charge of:
+<ul>
+<li>
+Outputing the manipulated audio data with the onboard DAC with DMA
+</li>
+<li>
+Interpreting and transferring the user input EQ values to the FPGA
+</li>
+<li>
+Acting as the controller for SPI communication
+</li>
+</ul>
+The FPGA handles:
+<ul>
+<li>
+Generating the Clock for the PCM1808 ADC to read in audio
+</li>
+<li>
+Digital filtering of the audio data based on EQ values from the MCU
+</li>
+<li>
+Sending audio into the MCU
+</li>
+</ul>
+<p>Ultimately, filtering was handled with an external circuit on the output of the MCU.</p>
 <p>The system is described in the block diagram and wiring diagram below.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -228,7 +258,7 @@ Output the manipulated audio onto speakers
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/kicadschematic.png" class="img-fluid figure-img"></p>
+<p><img src="images/updatedschematic.png" class="img-fluid figure-img"></p>
 <figcaption>Wiring Schematic for Project PariVo</figcaption>
 </figure>
 </div>
@@ -281,10 +311,10 @@ $1.78
 </tr>
 <tr>
 <td>
-<a href="https://cdn-shop.adafruit.com/product-files/1699/STX3120.pdf">Breadboard-Friendly Stereo Headphone Jack</a>
+<a href="https://cdn-shop.adafruit.com/product-files/1699/STX3120.pdf">Stereo Headphone Jack</a>
 </td>
 <td>
-<a href="https://www.adafruit.com/product/1699">Product ID: 1699</a>
+<a href="https://www.adafruit.com/product/1699">ID: 1699</a>
 </td>
 <td>
 3
@@ -322,6 +352,17 @@ n/a
 </td>
 </tr>
 </tbody></table>
+</section>
+<section id="in-progress-photos" class="level2">
+<h2 class="anchored" data-anchor-id="in-progress-photos">In-Progress Photos</h2>
+<p>Here are some photos of our design process!</p>
+<p><img src="images/inprog1.jpeg" class="img-fluid" alt="System Hooked up to Wooden Box"> <img src="images/inprog2.jpeg" class="img-fluid" alt="System Hooked up to Wooden Box"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/inprog4.png" class="img-fluid figure-img"></p>
+<figcaption>Debugging MCU Audio Output</figcaption>
+</figure>
+</div>
 
 
 </section>
