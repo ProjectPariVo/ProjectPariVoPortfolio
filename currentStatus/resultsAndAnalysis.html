@@ -69,6 +69,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -170,6 +199,12 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>The main consideration when fitting together the different subsystems was timing. We had to keep in mind the ordering of the sampling, the sampling frequency, and the rate of which we input and output audio. Most notably, we had to ensure that timing did not disobey Nyquist’s theorem, which states “that an analog signal can be digitized without aliasing error if and only if the sampling rate is greater than or equal to twice the highest frequency component in a given signal.” <a href="https://www.sciencedirect.com/topics/engineering/nyquist-theorem#:~:text=The%20Nyquist%20theorem%20states%20that,component%20in%20a%20given%20signal.">Wearable Sensors (Second Edition), 2021</a></p>
+<p>We anticipated two types of timing constraints: First, constraints on the sampling rate to ensure that we could support the full range of human hearing and second timing delays between when we input audio versus output audio. We decided that the latter would not impact the usability of our system, as the propagration delay would be too small to hear. As for the first, to capture the full human hearing range of roughly 20 Hz to 20,000 Hz, the sampling rate must be greater than 40 kHz, according to Nyquist’s.</p>
+<p>The source clock for I2S communication between the PCM1808 and the FPGA was set to 24Mhz. From the <a href="https://www.ti.com/lit/ds/symlink/pcm1808.pdf?ts=1733811456568&amp;ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FPCM1808%253Futm_source%253Dgoogle%2526utm_medium%253Dcpc%2526utm_campaign%253Dasc-null-null-GPN_EN-cpc-pf-google-wwe%2526utm_content%253DPCM1808%2526ds_k%253DPCM1808%2526DCM%253Dyes%2526gad_source%253D1%2526gclid%253DCj0KCQiA0MG5BhD1ARIsAEcZtwTIEC0Vn60_8Hhu8kIwDplaSF0jg3fLHL46j2836L2LkjAF_bsVc5saApR4EALw_wcB%2526gclsrc%253Daw.ds">PCM1808 datasheet</a>, we know that the system clock (SCKI) runs at <span class="math inline">\(256*F_s\)</span>, and that there is an internal clock divider, such that the bit clock (BCK) runs at <span class="math inline">\(64*F_s\)</span> and the left-right clock (LRCK) runs at <span class="math inline">\(F_s\)</span>. Therefore, we get that our sampling frequency, <span class="math inline">\(F_s\)</span>, is 93.75 kHz, making it so that we can sample frequencies up to 46.875 kHz. We also need to ensure that this sampling rate is preserved throughout so that we are outputting signals at the same rate we are reading them in.</p>
+<p>The next stage for audio is to be passed to from the FPGA to the MCU for output, which we do with SPI. The SPI source clock (SCK) runs at $master clock / 2^{(BR+1)} $ . Therefore, <span class="math inline">\(SCK = 80MHz / 2^{1+1} = 80MHz*4 = 20MHz\)</span>. Each SPI transaction involves sending the 4 potentiometer values, then recieving an audio sample. This requires a handshake between the MCU and FPGA handeled by load and done flags to indicate when each system is ready to output and recieve. Nonetheless, from analysis of the logic analyzer, each SPI communication (including loading and receiving the data) ran faster than 93.75 kHz, making it so that out throughput can be preserved.</p>
+<p>The final step for audio was for DMA to move audio data to the MCU DAC output register, where it read out on PA4 and PA5. This DMA transfer was triggered by TIM7, which was set to run as fast as possible. Recall that <span class="math inline">\(Timer freq = \frac{clkfreq}{PSC + 1} = \frac{80 MHz}{10} = 8MHz\)</span>. As we set ARR = 9, then we get that a reload event is triggered every 800kHz. Therefore, the output is faster than the sampling rate of 93.75 kHz. This is suitable for the system, because DMA is set to a circular buffer, meaning that it will continuously output copies of the audio amplitude until it is updated.</p>
+<p>By designing the system in this way, we allowed ourselves to have flexibility for timing. The constraining factor on output resolution is the input sampling frequency set to 93.75 kHz. Therefore, our system can output frequencies up to 46.875 kHz, which satisfies the range of human hearing.</p>
 
 
 

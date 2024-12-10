@@ -193,7 +193,7 @@ ul.task-list li input[type="checkbox"] {
 <p>To read in the audio into the FPGA, we need to use an Analog to Digital Converter (ADC) to convert analog stereo audio into digital data that our FPGA can manipulate. We opted to use the <a href="https://www.ti.com/lit/ds/symlink/pcm1808.pdf?ts=1732053094807&amp;ref_url=https%253A%252F%252Fwww.google.com%252F">PCM1808</a>, a 24-bit stereo ADC with I2S functionality. We will pass in the two different audio channels into the left and right channels, with the FPGA acting as the controller. The wiring diagram between the FPGA and PCM1808 ADC is outlines how the ADC interfaces with our system. Note that MD1, MD0, and FMT are set low with a pull-down resistor to set the PCM1808 as the worker with an I2S 24-bit data format.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/PCMwiringDiagram.jpeg" class="img-fluid figure-img"></p>
+<p><img src="images/fpgablockdiagram.png" class="img-fluid figure-img"></p>
 <figcaption>Original signal with multiple frequency components</figcaption>
 </figure>
 </div>

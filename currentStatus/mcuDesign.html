@@ -140,6 +140,7 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#outputting-audio" id="toc-outputting-audio" class="nav-link active" data-scroll-target="#outputting-audio">Outputting Audio</a></li>
   <li><a href="#filter-cutoff-values" id="toc-filter-cutoff-values" class="nav-link" data-scroll-target="#filter-cutoff-values">Filter Cutoff Values</a></li>
+  <li><a href="#spi-controller" id="toc-spi-controller" class="nav-link" data-scroll-target="#spi-controller">SPI Controller</a></li>
   </ul>
 </nav>
     </div>
@@ -177,7 +178,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>The microcontroller held two roles in our system. First, it would output the audio, converting it from digital to analog. Second, it would pass the lowpass and highpass filter cutoff values to the FPGA. While we ultimately did not succeed in implementing digital filtering on the FPGA, the MCU fulfilled its role in sending over the filter cutoff values.</p>
+<p>The microcontroller held three roles in our system. First, it would output the audio, converting it from digital to analog. Second, it would interpret and pass the lowpass and highpass filter cutoff values to the FPGA. Third, it acted as the controller for SPI communication. While we ultimately did not succeed in implementing digital filtering on the FPGA, the MCU fulfilled its role in sending over the filter cutoff values.</p>
 <section id="outputting-audio" class="level2">
 <h2 class="anchored" data-anchor-id="outputting-audio">Outputting Audio</h2>
 <p>The MCU takes in 8-bit mono audio data from the FPGA using SPI and stores the value in memory. As the onboard Digital-to-Analog Converter (DAC) can only read positive voltages, we converted our signed values to unsigned values and stored the value into a variable named leftAudio. We then used the onboard MCU DAC with Direct Memory Access (DMA) to convert the digital data to an analog signal. The DMA transfer was initiated by a reload event of TIM7 and would move the value stored in leftAudio into the output register of the DAC. By setting DMA to circular mode, it would continuously read from the leftAudio variable, as it was updated by SPI. Therefore, it was imperative to ensure that the clock speed of both the FPGA and MCU would be fast enough as to not warp the audio.</p>
@@ -187,6 +188,10 @@ ul.task-list li input[type="checkbox"] {
 <section id="filter-cutoff-values" class="level2">
 <h2 class="anchored" data-anchor-id="filter-cutoff-values">Filter Cutoff Values</h2>
 <p>The microcontroller also takes in an analog signal from the potentiometer and then converts that value into digital signals using the on-board ADC. The clock speed at which is running at a clock speed of 12 MHz. The MCU then sends the signal to the FPGA using SPI communication.</p>
+</section>
+<section id="spi-controller" class="level2">
+<h2 class="anchored" data-anchor-id="spi-controller">SPI Controller</h2>
+<p>The MCU generated the SPI clock and took charge of sending and recieving the potentiometer and audio data packets by using a load and done flag. Where the load flag would be triggered after the MCU has sent the potentionmeter values and the Done flag would be triggered after the FPGA has finished processing an audio packet.</p>
 
 
 </section>

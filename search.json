@@ -11,7 +11,7 @@
     "href": "currentStatus/mcuDesign.html",
     "title": "MCU Design",
     "section": "",
-    "text": "The microcontroller held two roles in our system. First, it would output the audio, converting it from digital to analog. Second, it would pass the lowpass and highpass filter cutoff values to the FPGA. While we ultimately did not succeed in implementing digital filtering on the FPGA, the MCU fulfilled its role in sending over the filter cutoff values."
+    "text": "The microcontroller held three roles in our system. First, it would output the audio, converting it from digital to analog. Second, it would interpret and pass the lowpass and highpass filter cutoff values to the FPGA. Third, it acted as the controller for SPI communication. While we ultimately did not succeed in implementing digital filtering on the FPGA, the MCU fulfilled its role in sending over the filter cutoff values."
   },
   {
     "objectID": "currentStatus/mcuDesign.html#outputting-audio",
@@ -26,6 +26,13 @@
     "title": "MCU Design",
     "section": "Filter Cutoff Values",
     "text": "Filter Cutoff Values\nThe microcontroller also takes in an analog signal from the potentiometer and then converts that value into digital signals using the on-board ADC. The clock speed at which is running at a clock speed of 12 MHz. The MCU then sends the signal to the FPGA using SPI communication."
+  },
+  {
+    "objectID": "currentStatus/mcuDesign.html#spi-controller",
+    "href": "currentStatus/mcuDesign.html#spi-controller",
+    "title": "MCU Design",
+    "section": "SPI Controller",
+    "text": "SPI Controller\nThe MCU generated the SPI clock and took charge of sending and recieving the potentiometer and audio data packets by using a load and done flag. Where the load flag would be triggered after the MCU has sent the potentionmeter values and the Done flag would be triggered after the FPGA has finished processing an audio packet."
   },
   {
     "objectID": "currentStatus/fpgaDesign.html",
@@ -81,14 +88,7 @@
     "href": "currentStatus/fpgaToMcu.html#spi-protocol",
     "title": "FPGA to MCU",
     "section": "SPI Protocol",
-    "text": "SPI Protocol\nThe MCU and FPGA pass data using SPI protocol, where it passes potentiometer values from the MCU to the FPGA and audio data from the FPGA to the MCU in 8-bit packages.\nThe clock speed is 12 MHz. In SPI, we are sending 8 bit packages."
-  },
-  {
-    "objectID": "currentStatus/fpgaToMcu.html#passing-audio",
-    "href": "currentStatus/fpgaToMcu.html#passing-audio",
-    "title": "FPGA to MCU",
-    "section": "Passing Audio",
-    "text": "Passing Audio\nTo output the audio, we opted to use SPI between the"
+    "text": "SPI Protocol\nThe MCU and FPGA pass data using SPI protocol, where it passes potentiometer values from the MCU to the FPGA and audio data from the FPGA to the MCU in 8-bit packages."
   },
   {
     "objectID": "about.html",
@@ -116,7 +116,7 @@
     "href": "index.html#about-us",
     "title": "ProjectParivo",
     "section": "About Us",
-    "text": "About Us\nAudrey and Victoria are seniors at Harvey Mudd College, majoring in engineering, and passionate about music. For their E155 (AKA MicroPs) Final Project, they are working together to create a two-channel DJ mixer. Ultimately, they hope to DJ together with their mixer.\n\nVictoria Parizot - Norwalk, CT\nVictoria Parizot is most interested with mechanical and electrical design, and excited to be taking MicroPs this semester! At Harvey Mudd, she is a West Dorm President, a Machine Shop Proctor, and a Member of the Tau Beta Pi Honors Society. In her free time, she enjoys woodworking, taking and developing film photos, and sailing.\nTake a look at her Portfolio to learn more!\n\n\nAudrey Vo - Valley Girl, CA\nAudrey is an APISPAM Head Sponsor, Atwood Dorm President, and Machine Shop Proctor at Harvey Mudd. The past few summers, she has been able to participate in summer research with Prof. Dodds in “Summer Start-Up” and with Prof. Gokli as part of the Riggs Fellowship. She was previously HMC 2025 Class President and also a member of the Prisoner Education Project.\nAudrey is currently a resident of Southern California, and have lived here her entire life. (If you have any recommendations of things to do in CA, please let her know!). In her free time, she love to play pickleball, try new foods, and spend time with friends.\nIf you are interested in learning more about Audrey, please feel free to connect on LinkedIn or explore her portfolio!"
+    "text": "About Us\nAudrey and Victoria are seniors at Harvey Mudd College, majoring in engineering, and passionate about music. For their E155 (AKA MicroPs) Final Project, they are working together to create a two-channel DJ mixer. Ultimately, they hope to DJ together with their mixer.\n\nVictoria Parizot - Norwalk, CT\nVictoria Parizot is most interested with mechanical and electrical design, and excited to be taking MicroPs this semester! At Harvey Mudd, she is a West Dorm President, a Machine Shop Proctor, and a Member of the Tau Beta Pi Honors Society. In her free time, she enjoys woodworking, taking and developing film photos, and sailing.\nTake a look at her portfolio to learn more!\n\n\nAudrey Vo - Valley Girl, CA\nAudrey is an APISPAM Head Sponsor, Atwood Dorm President, and Machine Shop Proctor at Harvey Mudd. The past few summers, she has been able to participate in summer research with Prof. Dodds in “Summer Start-Up” and with Prof. Gokli as part of the Riggs Fellowship. She was previously HMC 2025 Class President and also a member of the Prisoner Education Project.\nAudrey is currently a resident of Southern California, and have lived here her entire life. (If you have any recommendations of things to do in CA, please let her know!). In her free time, she love to play pickleball, try new foods, and spend time with friends.\nIf you are interested in learning more about Audrey, please feel free to connect on LinkedIn or explore her portfolio!"
   },
   {
     "objectID": "index.html#acknowledgements",
@@ -124,6 +124,13 @@
     "title": "ProjectParivo",
     "section": "Acknowledgements",
     "text": "Acknowledgements\nWe would like to thank Professor Brake for his help and guidance throughout the project, especially with his help debugging. We would also like to thank the the E155 Grutors, especially Kavi, for going above and beyond with helping us think about and implement our project and labs. Finally, we would like to thank our classmates, who were always willing to lend a second perspective, even during late nights in the lab."
+  },
+  {
+    "objectID": "index.html#references",
+    "href": "index.html#references",
+    "title": "ProjectParivo",
+    "section": "References",
+    "text": "References"
   },
   {
     "objectID": "currentStatus/digitalFiltering.html",
@@ -193,14 +200,21 @@
     "href": "currentStatus/systemOverview.html#system-overview",
     "title": "System Overview & Documentation",
     "section": "System Overview",
-    "text": "System Overview\nThe project is split between the MCU and FPGA. The MCU is in charge of (1) outputing the manipulated audio data with the onboard DAC with DMA, (2) interpreting and transferring the user input EQ values to the FPGA, and (3) acting as the controller for SPI communication. The FPGA acts as (1) the controller to PCM1808 ADC to read in audio and (2) implements digital filters to the data based on EQ values from the MCU. To communicate between the MCU and FPGA we use SPI for both the EQ values and audio data.\nThe system is described in the block diagram and wiring diagram below.\n\n\n\nBlock Diagram for Project PariVo\n\n\n\n\n\nWiring Schematic for Project PariVo"
+    "text": "System Overview\nThe project is split between the MCU and FPGA. The MCU is in charge of (1) outputing the manipulated audio data with the onboard DAC with DMA, (2) interpreting and transferring the user input EQ values to the FPGA, and (3) acting as the controller for SPI communication. The FPGA acts as (1) the controller to PCM1808 ADC to read in audio and (2) implements digital filters to the data based on EQ values from the MCU. To communicate between the MCU and FPGA we use SPI for both the EQ values and audio data.\nThe system is described in the block diagram and wiring diagram below.\n\n\n\nBlock Diagram for Project PariVo\n\n\n\n\n\nFPGA Diagram for Project PariVo\n\n\n\n\n\nWiring Schematic for Project PariVo"
   },
   {
     "objectID": "currentStatus/systemOverview.html#bill-of-materials",
     "href": "currentStatus/systemOverview.html#bill-of-materials",
     "title": "System Overview & Documentation",
     "section": "Bill of Materials",
-    "text": "Bill of Materials\nAs our project deals with audio, in addition to the STM32L432KC MCU and UPduino v3.1 with the iCE40 UP5K, we used the following materials. Our new hardware was the PCM1808, an external ADC to convert stereo audio to digital to be read into the FPGA using I2S. More information on the PCM1808 can be found under FPGA & PCM1808 Design.\n\n\n\nItem\n\n\nPart Number\n\n\nQuantity\n\n\nCost per\n\n\n\n\nPCM1808 ADC Breakout Board\n\n\nPCM1808\n\n\n1\n\n\n7.99\n\n\n\n\n10k Slide Potentiometer\n\n\nPTA2043-2015CPB103-ND\n\n\n2\n\n\n$1.78\n\n\n\n\nBreadboard-Friendly Stereo Headphone Jack\n\n\nProduct ID: 1699\n\n\n3\n\n\n$0.95\n\n\n\n\nAux Cable\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a\n\n\n\n\n8ohm 4W Speakers\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a"
+    "text": "Bill of Materials\nAs our project deals with audio, in addition to the STM32L432KC MCU and UPduino v3.1 with the iCE40 UP5K, we used the following materials. Our new hardware was the PCM1808, an external ADC to convert stereo audio to digital to be read into the FPGA using I2S. More information on the PCM1808 can be found under FPGA & PCM1808 Design.\n\n\n\nItem\n\n\nPart Number\n\n\nQuantity\n\n\nCost per\n\n\n\n\nPCM1808 ADC Breakout Board\n\n\nPCM1808\n\n\n1\n\n\n7.99\n\n\n\n\n10k Slide Potentiometer\n\n\nPTA2043-2015CPB103-ND\n\n\n2\n\n\n$1.78\n\n\n\n\nBreadboard-Friendly Stereo Headphone Jack\n\n\nProduct ID: 1699\n\n\n3\n\n\n$0.95\n\n\n\n\nAux Cable\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a\n\n\n\n\n8Ohm 4W Speakers\n\n\nSourced from stockroom\n\n\n3\n\n\nn/a"
+  },
+  {
+    "objectID": "currentStatus/resultsAndAnalysis.html",
+    "href": "currentStatus/resultsAndAnalysis.html",
+    "title": "Results & Analysis",
+    "section": "",
+    "text": "The main consideration when fitting together the different subsystems was timing. We had to keep in mind the ordering of the sampling, the sampling frequency, and the rate of which we input and output audio. Most notably, we had to ensure that timing did not disobey Nyquist’s theorem, which states “that an analog signal can be digitized without aliasing error if and only if the sampling rate is greater than or equal to twice the highest frequency component in a given signal.” Wearable Sensors (Second Edition), 2021\nWe anticipated two types of timing constraints: First, constraints on the sampling rate to ensure that we could support the full range of human hearing and second timing delays between when we input audio versus output audio. We decided that the latter would not impact the usability of our system, as the propagration delay would be too small to hear. As for the first, to capture the full human hearing range of roughly 20 Hz to 20,000 Hz, the sampling rate must be greater than 40 kHz, according to Nyquist’s.\nThe source clock for I2S communication between the PCM1808 and the FPGA was set to 24Mhz. From the PCM1808 datasheet, we know that the system clock (SCKI) runs at \\(256*F_s\\), and that there is an internal clock divider, such that the bit clock (BCK) runs at \\(64*F_s\\) and the left-right clock (LRCK) runs at \\(F_s\\). Therefore, we get that our sampling frequency, \\(F_s\\), is 93.75 kHz, making it so that we can sample frequencies up to 46.875 kHz. We also need to ensure that this sampling rate is preserved throughout so that we are outputting signals at the same rate we are reading them in.\nThe next stage for audio is to be passed to from the FPGA to the MCU for output, which we do with SPI. The SPI source clock (SCK) runs at $master clock / 2^{(BR+1)} $ . Therefore, \\(SCK = 80MHz / 2^{1+1} = 80MHz*4 = 20MHz\\). Each SPI transaction involves sending the 4 potentiometer values, then recieving an audio sample. This requires a handshake between the MCU and FPGA handeled by load and done flags to indicate when each system is ready to output and recieve. Nonetheless, from analysis of the logic analyzer, each SPI communication (including loading and receiving the data) ran faster than 93.75 kHz, making it so that out throughput can be preserved.\nThe final step for audio was for DMA to move audio data to the MCU DAC output register, where it read out on PA4 and PA5. This DMA transfer was triggered by TIM7, which was set to run as fast as possible. Recall that \\(Timer freq = \\frac{clkfreq}{PSC + 1} = \\frac{80 MHz}{10} = 8MHz\\). As we set ARR = 9, then we get that a reload event is triggered every 800kHz. Therefore, the output is faster than the sampling rate of 93.75 kHz. This is suitable for the system, because DMA is set to a circular buffer, meaning that it will continuously output copies of the audio amplitude until it is updated.\nBy designing the system in this way, we allowed ourselves to have flexibility for timing. The constraining factor on output resolution is the input sampling frequency set to 93.75 kHz. Therefore, our system can output frequencies up to 46.875 kHz, which satisfies the range of human hearing."
   },
   {
     "objectID": "currentStatus/inputAudio.html",
