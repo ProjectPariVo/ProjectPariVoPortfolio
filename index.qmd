@@ -33,7 +33,7 @@ Audrey is currently a resident of Southern California, and have lived here her e
 If you are interested in learning more about Audrey, please feel free to connect on [LinkedIn](https://www.linkedin.com/in/audrey-vo-us23/) or explore her [portfolio](https://audreyvo23.github.io/hmc-e155-portfolio/)!
 
 ## Acknowledgements
-We would like to thank Professor Brake for his help and guidance throughout the project. We would also like to thank the the E155 Grutors, especially Kavi, for going above and beyond with helping us think about and implement our project and labs. Finally, we would like to thank our classmates, who were always willing to lend a second perspective, even during late nights in the lab. 
+We would like to thank Professor Brake for his help and guidance throughout the project. We would also like to thank the the E155 Grutors, especially Kavi, for going above and beyond with helping us think about and implement our project and labs. We would like to thank Luke for his effortless help in sourcing the materials. Finally, we would like to thank our classmates, who were always willing to lend a second perspective, even during late nights in the lab. 
 
 # References
 ### Previous Projects
@@ -42,6 +42,8 @@ We took inspiration from the following projects:
 [Kevin Box and Eli Rejito's Digital Synthisizer MicroPs Final Project](https://erejto.github.io/FPGA-Synth-project-portfolio/fpga.html#spi-to-dac)
 
 [Brian Simpkins and Kevin Kim's Auto Audio Harmonizer](https://briansimpkins.github.io/E155_Final/)
+
+[Arya Goutam and Alec Vercruysse's ATLAS Project](https://github.com/AlecVercruysse/ATLAS/blob/master/papers/report.pdf)
 
 ### DMA & DAC Documentation
 [STM32L4 DAC & DMA by Learning Embedded World](https://youtu.be/X9T0ZND_eZc?si=qwe-sAcXkT96tGlL)
