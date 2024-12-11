@@ -14,9 +14,9 @@ Because digital filtering was not implemented on the FPGA, an analog circuit was
 
 #### Calculations to Determine the Needed Capacitance of Circuit
 
-$$ Cutoff Frequency for RC/CR filter = \frac{1}{2\pi rc} $$
+$$ \text{Cutoff Frequency for RC/CR filter} = \frac{1}{2\pi rc} $$
 
-$$ Potentiometer Range = 5 Hz - 10 kHz $$
+$$ \text{Potentiometer Range} = 5 Hz to 10 kHz $$
 
 $$ f_c = \frac{1}{2\pi rc} = \frac{1}{2\pi (10000)(1uF)} = 15.92 Hz $$
 
